@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cashier/shared/components/apps/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
@@ -89,18 +90,8 @@ class _PosMenuDrawerState extends State<PosMenuDrawer> with WindowListener {
                   onTap: () {},
                 ),
                 _buildMenuItem(
-                  icon: HugeIcons.strokeRoundedLayers01,
-                  label: 'Lihat penjualan terbuka',
-                  onTap: () {},
-                ),
-                _buildMenuItem(
                   icon: HugeIcons.strokeRoundedInbox,
-                  label: 'Uang Masuk / Keluar',
-                  onTap: () {},
-                ),
-                _buildMenuItem(
-                  icon: HugeIcons.strokeRoundedCreditCard,
-                  label: 'Credit payments',
+                  label: 'Uang Masuk / Keluar  (pro)',
                   onTap: () {},
                 ),
                 _buildMenuItem(
@@ -119,17 +110,6 @@ class _PosMenuDrawerState extends State<PosMenuDrawer> with WindowListener {
                 _buildMenuItem(
                   icon: HugeIcons.strokeRoundedLogout01,
                   label: 'Keluar',
-                  onTap: () {},
-                ),
-                const Divider(
-                  height: 16,
-                  indent: 24,
-                  endIndent: 24,
-                  color: AppColors.surfaceBorder,
-                ),
-                _buildMenuItem(
-                  icon: HugeIcons.strokeRoundedMegaphone01,
-                  label: 'Umpan balik',
                   onTap: () {},
                 ),
               ],
@@ -153,13 +133,7 @@ class _PosMenuDrawerState extends State<PosMenuDrawer> with WindowListener {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'POS - Admin',
-            style: AppTextStyles.bodyMedium.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.charcoal900,
-            ),
-          ),
+          const AppLogo(),
           IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_forward, size: 20),

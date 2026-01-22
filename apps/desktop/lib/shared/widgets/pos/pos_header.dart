@@ -5,7 +5,9 @@ import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:window_manager/window_manager.dart';
 
 class PosHeader extends StatelessWidget {
-  const PosHeader({super.key});
+  final VoidCallback? onToggleLayout;
+
+  const PosHeader({super.key, this.onToggleLayout});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,16 @@ class PosHeader extends StatelessWidget {
             const SizedBox(width: 24),
             Container(height: 32, width: 1, color: AppColors.surfaceBorder),
             const SizedBox(width: 24),
+
+            // Layout Toggle
+            if (onToggleLayout != null)
+              IconButton(
+                onPressed: onToggleLayout,
+                icon: const Icon(Icons.swap_horiz, color: AppColors.emerald600),
+                tooltip: 'Switch to V2 Layout',
+              ),
+
+            const SizedBox(width: 16),
 
             // Search Bar
             Expanded(

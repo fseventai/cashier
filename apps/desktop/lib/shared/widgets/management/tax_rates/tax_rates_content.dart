@@ -9,51 +9,50 @@ class TaxRatesContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      padding: const EdgeInsets.all(24),
+      color: AppColors.surfaceAlt, // background-light
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
-        color: AppColors.surfaceAlt, // background-light
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            border: Border.all(color: AppColors.surfaceBorder),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.visibility_off_outlined,
-                size: 96, // roughly 8xl or close to it
-                color: AppColors.slate300,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          border: Border.all(color: AppColors.surfaceBorder),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.visibility_off_outlined,
+              size: 96, // roughly 8xl or close to it
+              color: AppColors.slate300,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'No taxes',
+              style: AppTextStyles.h2.copyWith(
+                color: AppColors.textMuted,
+                fontWeight: FontWeight.normal,
               ),
-              const SizedBox(height: 16),
-              Text(
-                'No taxes',
-                style: AppTextStyles.h2.copyWith(
-                  color: AppColors.textMuted,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              const SizedBox(height: 4),
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: onNewTaxRate,
-                  child: Text(
-                    'Add new tax',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.emerald600,
-                      fontWeight: FontWeight.w600,
-                    ),
+            ),
+            const SizedBox(height: 4),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: onNewTaxRate,
+                child: Text(
+                  'Add new tax',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.emerald600,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

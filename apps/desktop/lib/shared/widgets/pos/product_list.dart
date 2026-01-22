@@ -75,6 +75,7 @@ class ProductList extends StatelessWidget {
             child: Container(
               color: Colors.white,
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];

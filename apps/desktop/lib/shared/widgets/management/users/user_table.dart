@@ -21,7 +21,7 @@ class UserTable extends StatelessWidget {
           // Header
           Container(
             color: isDark
-                ? AppColors.slate700.withOpacity(0.5)
+                ? AppColors.slate700.withValues(alpha: 0.5)
                 : AppColors.slate50,
             child: Row(
               children: [
@@ -208,8 +208,8 @@ class _EmptyRow extends StatelessWidget {
       decoration: BoxDecoration(
         color: isStriped
             ? (isDark
-                  ? AppColors.slate800.withOpacity(0.5)
-                  : AppColors.slate50.withOpacity(0.5))
+                  ? AppColors.slate800.withValues(alpha: 0.5)
+                  : AppColors.slate50.withValues(alpha: 0.5))
             : null,
         border: const Border(
           bottom: BorderSide(color: AppColors.surfaceBorder),
