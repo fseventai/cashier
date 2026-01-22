@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:cashier/core/constants/app_colors.dart';
-import 'package:cashier/core/constants/app_text_styles.dart';
-import 'package:cashier/core/constants/app_routes.dart';
+import 'package:cashier/core/constants/apps/app_colors.dart';
+import 'package:cashier/core/constants/apps/app_text_styles.dart';
+import 'package:cashier/core/constants/apps/app_routes.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:intl/intl.dart';
 

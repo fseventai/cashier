@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cashier/core/constants/app_colors.dart';
+import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/shared/widgets/pos/pos_header.dart';
 import 'package:cashier/shared/widgets/pos/product_list.dart';
 import 'package:cashier/shared/widgets/pos/cart_summary.dart';

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:cashier/core/constants/app_colors.dart';
-import 'package:cashier/core/constants/app_text_styles.dart';
+import 'package:cashier/core/constants/apps/app_colors.dart';
+import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:cashier/shared/widgets/management/users/user_toolbar.dart';
 import 'package:cashier/shared/widgets/management/users/user_table.dart';
 
 class UsersSecurityContent extends StatefulWidget {
-  final VoidCallback? onAddUser;
-
-  const UsersSecurityContent({super.key, this.onAddUser});
+  const UsersSecurityContent({super.key});
 
   @override
   State<UsersSecurityContent> createState() => _UsersSecurityContentState();
@@ -46,9 +43,6 @@ class _UsersSecurityContentState extends State<UsersSecurityContent> {
             ],
           ),
         ),
-
-        // Toolbar
-        UserToolbar(onAdd: widget.onAddUser),
 
         // Content
         Expanded(

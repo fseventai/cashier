@@ -1,7 +1,7 @@
 import 'package:cashier/shared/components/apps/command_toolbar_button.dart';
 import 'package:cashier/shared/components/apps/custom_vertical_divider.dart';
 import 'package:flutter/material.dart';
-import 'package:cashier/core/constants/app_colors.dart';
+import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class CommandToolbar extends StatelessWidget {

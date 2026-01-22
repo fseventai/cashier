@@ -1,4 +1,4 @@
-import 'package:cashier/core/constants/app_colors.dart';
+import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomVerticalDivider extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:cashier/shared/widgets/pos/action_grid.dart';
-import 'package:cashier/core/constants/app_colors.dart';
-import 'package:cashier/core/constants/app_text_styles.dart';
+import 'package:cashier/core/constants/apps/app_colors.dart';
+import 'package:cashier/core/constants/apps/app_text_styles.dart';
 
 class PosSidebar extends StatelessWidget {
   final VoidCallback? onMorePressed;

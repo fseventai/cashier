@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cashier/core/constants/app_colors.dart';
-import 'package:cashier/core/constants/app_text_styles.dart';
+import 'package:cashier/core/constants/apps/app_colors.dart';
+import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class CommandToolbarButton extends StatefulWidget {
@@ -32,10 +32,10 @@ class CommandToolbarButton extends StatefulWidget {
   });
 
   @override
-  State<CommandToolbarButton> createState() => CommandToolbarButtonState();
+  State<CommandToolbarButton> createState() => _CommandToolbarButtonState();
 }
 
-class CommandToolbarButtonState extends State<CommandToolbarButton> {
+class _CommandToolbarButtonState extends State<CommandToolbarButton> {
   bool _isHovered = false;
 
   @override

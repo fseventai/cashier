@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cashier/core/constants/app_colors.dart';
-import 'package:cashier/core/constants/app_text_styles.dart';
+import 'package:cashier/core/constants/apps/app_colors.dart';
+import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:cashier/shared/widgets/management/stock/widgets/stock_filter_bar.dart';
 import 'package:cashier/shared/widgets/management/stock/widgets/stock_search_bar.dart';
 
