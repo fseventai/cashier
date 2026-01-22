@@ -8,6 +8,12 @@ import 'package:cashier/shared/widgets/management/products/product_drawer.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_toolbar.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_content_area.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_drawer.dart';
+import 'package:cashier/shared/widgets/management/dashboard/dashboard_content.dart';
+import 'package:cashier/shared/widgets/management/tax_rates/tax_rates_content.dart';
+import 'package:cashier/shared/widgets/management/tax_rates/tax_rates_drawer.dart';
+import 'package:cashier/shared/widgets/management/stock/stock_content.dart';
+import 'package:cashier/shared/widgets/management/users/users_security_content.dart';
+import 'package:cashier/shared/widgets/management/users/user_drawer.dart';
 
 class ManagementScreen extends StatefulWidget {
   const ManagementScreen({super.key});
@@ -25,6 +31,21 @@ class _ManagementScreenState extends State<ManagementScreen> {
     });
   }
 
+  Widget? get _endDrawer {
+    switch (_activeRoute) {
+      case 'customers':
+        return const CustomerDrawer();
+      case 'taxes':
+        return const TaxRateDrawer();
+      case 'users':
+        return const UserDrawer();
+      case 'products':
+        return const ProductDrawer();
+      default:
+        return const ProductDrawer();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -33,9 +54,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
         brightness: Brightness.light,
       ),
       child: Scaffold(
-        endDrawer: _activeRoute == 'customers'
-            ? const CustomerDrawer()
-            : const ProductDrawer(),
+        endDrawer: _endDrawer,
         body: Builder(
           builder: (context) {
             return Row(
@@ -54,17 +73,28 @@ class _ManagementScreenState extends State<ManagementScreen> {
                       ManagementHeader(
                         breadcrumbs: [
                           'Management',
-                          _activeRoute == 'company'
-                              ? 'My company'
-                              : _activeRoute == 'customers'
-                              ? 'Customers & suppliers'
-                              : 'Products',
+                          if (_activeRoute == 'dashboard')
+                            'Dashboard'
+                          else if (_activeRoute == 'company')
+                            'My company'
+                          else if (_activeRoute == 'customers')
+                            'Customers & suppliers'
+                          else if (_activeRoute == 'taxes')
+                            'Tax rates'
+                          else if (_activeRoute == 'stock')
+                            'Stock'
+                          else if (_activeRoute == 'users')
+                            'Users & security'
+                          else
+                            'Products',
                         ],
                         onClose: () => Navigator.of(context).pop(),
                       ),
 
                       // Content based on route
-                      if (_activeRoute == 'products') ...[
+                      if (_activeRoute == 'dashboard')
+                        const Expanded(child: DashboardContent())
+                      else if (_activeRoute == 'products') ...[
                         // Ribbon Toolbar
                         CommandToolbar(
                           onNewProduct: () =>
@@ -90,6 +120,22 @@ class _ManagementScreenState extends State<ManagementScreen> {
                           onAdd: () => Scaffold.of(context).openEndDrawer(),
                         ),
                         const Expanded(child: CustomerContentArea()),
+                      ] else if (_activeRoute == 'taxes') ...[
+                        Expanded(
+                          child: TaxRatesContent(
+                            onNewTaxRate: () =>
+                                Scaffold.of(context).openEndDrawer(),
+                          ),
+                        ),
+                      ] else if (_activeRoute == 'stock') ...[
+                        const Expanded(child: StockContent()),
+                      ] else if (_activeRoute == 'users') ...[
+                        Expanded(
+                          child: UsersSecurityContent(
+                            onAddUser: () =>
+                                Scaffold.of(context).openEndDrawer(),
+                          ),
+                        ),
                       ] else ...[
                         Expanded(
                           child: Center(
