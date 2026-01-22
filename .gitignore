@@ -1,0 +1,71 @@
+# General
+node_modules/
+.DS_Store
+*.log
+logs
+*.tmp
+*.swp
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Monorepo (Turbo & PNPM)
+.turbo/
+.pnpm-store/
+node_modules/
+pnpm-lock.yaml.lock
+pnpm-debug.log*
+.npm/
+
+# Environment Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+!.env.example
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/doc/api/
+/coverage/
+app.*.symbols
+app.*.map.json
+# Android artifacts
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+# If you want to ignore pubspec.lock (optional, usually kept in apps)
+# apps/desktop/pubspec.lock
+
+# Web (SvelteKit / Vite)
+.svelte-kit/
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# Backend (Elysia / Node)
+apps/api-server/dist/
+apps/api-server/.env
+apps/api-server/.env.*
+!apps/api-server/.env.example
+
+# Database (Drizzle / Supabase)
+# Drizzle usually commits migrations, but you might want to ignore db files
+*.db
+*.db-journal
+.supabase/
+
+# OS specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
