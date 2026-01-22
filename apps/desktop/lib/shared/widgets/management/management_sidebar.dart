@@ -1,3 +1,4 @@
+import 'package:cashier/shared/components/apps/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:cashier/core/constants/app_colors.dart';
 import 'package:cashier/core/constants/app_text_styles.dart';
@@ -40,27 +41,7 @@ class ManagementSidebar extends StatelessWidget {
                 ),
               ),
             ),
-            child: Row(
-              children: [
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: AppColors.emerald600,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'CoopManager',
-                  style: AppTextStyles.h3.copyWith(
-                    color: isDark ? Colors.white : AppColors.slate900,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-              ],
-            ),
+            child: AppLogo(),
           ),
 
           // Navigation Links
@@ -73,13 +54,6 @@ class ManagementSidebar extends StatelessWidget {
                   icon: HugeIcons.strokeRoundedDashboardSquare01,
                   isActive: activeRoute == 'dashboard',
                   onTap: () => onRouteSelected('dashboard'),
-                  isDark: isDark,
-                ),
-                _NavBtn(
-                  label: 'Documents',
-                  icon: HugeIcons.strokeRoundedNote01,
-                  isActive: activeRoute == 'documents',
-                  onTap: () => onRouteSelected('documents'),
                   isDark: isDark,
                 ),
                 _NavBtn(
@@ -110,32 +84,12 @@ class ManagementSidebar extends StatelessWidget {
                   onTap: () => onRouteSelected('customers'),
                   isDark: isDark,
                 ),
-                _NavBtn(
-                  label: 'Promotions',
-                  icon: HugeIcons.strokeRoundedFavourite,
-                  isActive: activeRoute == 'promotions',
-                  onTap: () => onRouteSelected('promotions'),
-                  isDark: isDark,
-                ),
+
                 _NavBtn(
                   label: 'Users & security',
                   icon: HugeIcons.strokeRoundedKey01,
                   isActive: activeRoute == 'users',
                   onTap: () => onRouteSelected('users'),
-                  isDark: isDark,
-                ),
-                _NavBtn(
-                  label: 'Payment types',
-                  icon: HugeIcons.strokeRoundedCreditCard,
-                  isActive: activeRoute == 'payments',
-                  onTap: () => onRouteSelected('payments'),
-                  isDark: isDark,
-                ),
-                _NavBtn(
-                  label: 'Countries',
-                  icon: HugeIcons.strokeRoundedGlobal,
-                  isActive: activeRoute == 'countries',
-                  onTap: () => onRouteSelected('countries'),
                   isDark: isDark,
                 ),
                 _NavBtn(
@@ -207,7 +161,7 @@ class _NavBtnState extends State<_NavBtn> {
   @override
   Widget build(BuildContext context) {
     final contentColor = widget.isActive
-        ? Colors.white
+        ? AppColors.emerald700
         : (_isHovered
               ? AppColors.emerald600
               : (widget.isDark ? AppColors.slate400 : AppColors.slate600));
@@ -219,25 +173,19 @@ class _NavBtnState extends State<_NavBtn> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 1),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
             color: widget.isActive
-                ? AppColors.emerald600
+                ? (widget.isDark
+                      ? AppColors.emerald900.withValues(alpha: 0.2)
+                      : AppColors.emerald100)
                 : (_isHovered
                       ? (widget.isDark
                             ? AppColors.slate700.withValues(alpha: 0.5)
                             : AppColors.slate100)
                       : Colors.transparent),
-            boxShadow: widget.isActive
-                ? [
-                    BoxShadow(
-                      color: AppColors.emerald600.withValues(alpha: 0.2),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ]
-                : null,
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             children: [

@@ -4,7 +4,9 @@ import 'package:cashier/core/constants/app_text_styles.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class ProductContentArea extends StatelessWidget {
-  const ProductContentArea({super.key});
+  final VoidCallback? onNewProduct;
+
+  const ProductContentArea({super.key, this.onNewProduct});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,11 @@ class ProductContentArea extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildLinkText('Add new product', isDark),
+                      _buildLinkText(
+                        'Add new product',
+                        isDark,
+                        onTap: onNewProduct,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: Text(
@@ -201,15 +207,18 @@ class ProductContentArea extends StatelessWidget {
     );
   }
 
-  Widget _buildLinkText(String text, bool isDark) {
+  Widget _buildLinkText(String text, bool isDark, {VoidCallback? onTap}) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: Text(
-        text,
-        style: AppTextStyles.bodySmall.copyWith(
-          color: AppColors.emerald600,
-          fontWeight: FontWeight.w600,
-          decoration: TextDecoration.underline,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Text(
+          text,
+          style: AppTextStyles.bodySmall.copyWith(
+            color: AppColors.emerald600,
+            fontWeight: FontWeight.w600,
+            decoration: TextDecoration.underline,
+          ),
         ),
       ),
     );

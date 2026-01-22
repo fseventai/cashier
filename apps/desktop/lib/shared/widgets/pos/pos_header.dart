@@ -1,3 +1,4 @@
+import 'package:cashier/shared/components/apps/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:cashier/core/constants/app_colors.dart';
 import 'package:cashier/core/constants/app_text_styles.dart';
@@ -19,35 +20,7 @@ class PosHeader extends StatelessWidget {
         child: Row(
           children: [
             // Logo Section
-            Row(
-              children: [
-                const Icon(
-                  Icons.local_mall_outlined,
-                  color: AppColors.emerald600,
-                  size: 32,
-                ),
-                const SizedBox(width: 4),
-                RichText(
-                  text: TextSpan(
-                    style: AppTextStyles.display.copyWith(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
-                    ),
-                    children: const [
-                      TextSpan(
-                        text: 'Coop',
-                        style: TextStyle(color: AppColors.emerald600),
-                      ),
-                      TextSpan(
-                        text: 'POS',
-                        style: TextStyle(color: AppColors.charcoal900),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            AppLogo(),
 
             const SizedBox(width: 24),
             Container(height: 32, width: 1, color: AppColors.surfaceBorder),

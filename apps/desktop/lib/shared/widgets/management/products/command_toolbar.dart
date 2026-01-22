@@ -4,7 +4,9 @@ import 'package:cashier/core/constants/app_text_styles.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class CommandToolbar extends StatelessWidget {
-  const CommandToolbar({super.key});
+  final VoidCallback? onNewProduct;
+
+  const CommandToolbar({super.key, this.onNewProduct});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class CommandToolbar extends StatelessWidget {
             _ToolbarBtn(
               icon: HugeIcons.strokeRoundedAdd02,
               label: 'New product',
-              onTap: () {},
+              onTap: onNewProduct ?? () {},
               isDark: isDark,
               iconColor: AppColors.emerald600,
               forceIconBold: true,
