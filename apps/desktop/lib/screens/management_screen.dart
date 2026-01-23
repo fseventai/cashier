@@ -1,6 +1,12 @@
 import 'package:cashier/shared/models/breadcrumb_item.dart';
 import 'package:cashier/shared/models/management_page_config.dart';
+import 'package:cashier/shared/widgets/management/categories/categories_content_area.dart';
+import 'package:cashier/shared/widgets/management/categories/categories_drawer.dart';
+import 'package:cashier/shared/widgets/management/categories/categories_toolbar.dart';
 import 'package:cashier/shared/widgets/management/company/company_content_area.dart';
+import 'package:cashier/shared/widgets/management/members/members_content_area.dart';
+import 'package:cashier/shared/widgets/management/members/members_drawer.dart';
+import 'package:cashier/shared/widgets/management/members/members_toolbar.dart';
 import 'package:cashier/shared/widgets/management/stock/stock_toolbar.dart';
 import 'package:cashier/shared/widgets/management/tax_rates/tax_rates_toolbar.dart';
 import 'package:cashier/shared/widgets/management/users/user_toolbar.dart';
@@ -38,8 +44,10 @@ class _ManagementScreenState extends State<ManagementScreen> {
     'dashboard': 'Dashboard',
     'company': 'My company',
     'customers': 'Customers & suppliers',
+    'categories': 'Categories',
     'taxes': 'Tax rates',
     'stock': 'Stock',
+    'members': 'Members',
     'users': 'Users & security',
     'products': 'Products',
     'reporting': 'Reporting',
@@ -48,7 +56,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
   List<BreadcrumbItem> _getBreadcrumbs(String activeRoute) {
     return [
       BreadcrumbItem(label: 'Management', onTap: () {}),
-      BreadcrumbItem(label: routeLabels[activeRoute] ?? 'Products'),
+      BreadcrumbItem(label: routeLabels[activeRoute] ?? 'dashboard'),
     ];
   }
 
@@ -79,11 +87,25 @@ class _ManagementScreenState extends State<ManagementScreen> {
           ),
         );
 
+      case 'categories':
+        return ManagementPageConfig(
+          toolbar: CategoriesToolbar(onAdd: _openDrawer),
+          drawer: const CategoriesDrawer(),
+          content: const CategoriesContentArea(),
+        );
+
       case 'customers':
         return ManagementPageConfig(
           toolbar: CustomerToolbar(onAdd: _openDrawer),
           drawer: const CustomerDrawer(),
           content: const CustomerContentArea(),
+        );
+
+      case 'members':
+        return ManagementPageConfig(
+          toolbar: MembersToolbar(onAdd: _openDrawer),
+          drawer: const MembersDrawer(),
+          content: const MembersContentArea(),
         );
 
       case 'taxes':

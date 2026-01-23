@@ -3,8 +3,8 @@ import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-class CustomerContentArea extends StatelessWidget {
-  const CustomerContentArea({super.key});
+class CategoriesContentArea extends StatelessWidget {
+  const CategoriesContentArea({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class CustomerContentArea extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Name',
+                    'Category Name',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: isDark ? AppColors.slate300 : AppColors.slate700,
                     ),
@@ -78,7 +78,7 @@ class CustomerContentArea extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search customers & suppliers',
+                      hintText: 'Search categories',
                       hintStyle: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.slate400,
                       ),
@@ -147,32 +147,27 @@ class CustomerContentArea extends StatelessWidget {
               ),
             ),
             columns: [
-              DataColumn(label: _buildHeader('CODE', headerStyle)),
-              DataColumn(label: _buildHeader('NAME', headerStyle)),
-              DataColumn(label: _buildHeader('TAX NUMBER', headerStyle)),
-              DataColumn(label: _buildHeader('ALAMAT', headerStyle)),
-              DataColumn(label: _buildHeader('NEGARA', headerStyle)),
-              DataColumn(label: _buildHeader('PHONE NUMBER', headerStyle)),
-              DataColumn(label: _buildHeader('EMAIL', headerStyle)),
+              DataColumn(label: _buildHeader('CATEGORY NAME', headerStyle)),
+              DataColumn(label: _buildHeader('DESCRIPTION', headerStyle)),
+              DataColumn(label: _buildHeader('PRODUCT COUNT', headerStyle)),
+              DataColumn(label: _buildHeader('STATUS', headerStyle)),
             ],
             rows: [
               DataRow(
                 cells: [
-                  const DataCell(Text('')),
+                  const DataCell(Text('1.')),
                   DataCell(
                     Text(
-                      'Walk-in customer',
+                      'Makanan',
                       style: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                         color: isDark ? AppColors.slate200 : AppColors.slate800,
                       ),
                     ),
                   ),
-                  DataCell(_buildEmptyCell('(none)', isDark)),
-                  DataCell(_buildEmptyCell('(none)', isDark)),
-                  const DataCell(Text('')),
-                  DataCell(_buildEmptyCell('(none)', isDark)),
-                  DataCell(_buildEmptyCell('(none)', isDark)),
+                  DataCell(_buildEmptyCell('(Buah-buahan)', isDark)),
+                  DataCell(_buildEmptyCell('10', isDark)),
+                  DataCell(_buildEmptyCell('Active', isDark)),
                 ],
               ),
             ],

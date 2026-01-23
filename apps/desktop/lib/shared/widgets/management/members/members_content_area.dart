@@ -3,8 +3,8 @@ import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-class CustomerContentArea extends StatelessWidget {
-  const CustomerContentArea({super.key});
+class MembersContentArea extends StatelessWidget {
+  const MembersContentArea({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class CustomerContentArea extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Name',
+                    'Member Name',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: isDark ? AppColors.slate300 : AppColors.slate700,
                     ),
@@ -78,7 +78,7 @@ class CustomerContentArea extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search customers & suppliers',
+                      hintText: 'Search members',
                       hintStyle: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.slate400,
                       ),
@@ -147,32 +147,34 @@ class CustomerContentArea extends StatelessWidget {
               ),
             ),
             columns: [
-              DataColumn(label: _buildHeader('CODE', headerStyle)),
-              DataColumn(label: _buildHeader('NAME', headerStyle)),
-              DataColumn(label: _buildHeader('TAX NUMBER', headerStyle)),
-              DataColumn(label: _buildHeader('ALAMAT', headerStyle)),
-              DataColumn(label: _buildHeader('NEGARA', headerStyle)),
+              DataColumn(label: _buildHeader('FULLNAME', headerStyle)),
+              DataColumn(label: _buildHeader('IDENTITY NUMBER', headerStyle)),
               DataColumn(label: _buildHeader('PHONE NUMBER', headerStyle)),
               DataColumn(label: _buildHeader('EMAIL', headerStyle)),
+              DataColumn(label: _buildHeader('DEPOSIT', headerStyle)),
+              DataColumn(label: _buildHeader('LOYALTY POINTS', headerStyle)),
+              DataColumn(label: _buildHeader('NOTES', headerStyle)),
+              DataColumn(label: _buildHeader('JOINED AT', headerStyle)),
             ],
             rows: [
               DataRow(
                 cells: [
-                  const DataCell(Text('')),
+                  const DataCell(Text('Jhon Dalton')),
                   DataCell(
                     Text(
-                      'Walk-in customer',
+                      '1720320302020001',
                       style: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                         color: isDark ? AppColors.slate200 : AppColors.slate800,
                       ),
                     ),
                   ),
-                  DataCell(_buildEmptyCell('(none)', isDark)),
-                  DataCell(_buildEmptyCell('(none)', isDark)),
-                  const DataCell(Text('')),
-                  DataCell(_buildEmptyCell('(none)', isDark)),
-                  DataCell(_buildEmptyCell('(none)', isDark)),
+                  DataCell(_buildEmptyCell('085225224154', isDark)),
+                  DataCell(_buildEmptyCell('cooperativa@email.com', isDark)),
+                  const DataCell(Text('Rp 0')),
+                  DataCell(_buildEmptyCell('0', isDark)),
+                  DataCell(_buildEmptyCell('cooperativa', isDark)),
+                  DataCell(_buildEmptyCell('2026-01-24 10:00:00', isDark)),
                 ],
               ),
             ],

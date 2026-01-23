@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
-import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:cashier/shared/widgets/management/reporting/report_list_panel.dart';
 import 'package:cashier/shared/widgets/management/reporting/report_filter_panel.dart';
 
@@ -39,16 +38,6 @@ class _ReportingContentState extends State<ReportingContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title
-          Text(
-            'Select report to view or print',
-            style: AppTextStyles.h2.copyWith(
-              fontWeight: FontWeight.w300,
-              color: AppColors.slate800,
-            ),
-          ),
-          const SizedBox(height: 24),
-
           // Main content area
           Expanded(
             child: Container(

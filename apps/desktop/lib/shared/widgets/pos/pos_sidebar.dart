@@ -6,8 +6,9 @@ import 'package:cashier/core/constants/apps/app_text_styles.dart';
 
 class PosSidebar extends StatelessWidget {
   final VoidCallback? onMorePressed;
+  final VoidCallback? onPayPressed;
 
-  const PosSidebar({super.key, this.onMorePressed});
+  const PosSidebar({super.key, this.onMorePressed, this.onPayPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -259,7 +260,7 @@ class PosSidebar extends StatelessWidget {
                   elevation: 4,
                   shadowColor: AppColors.emerald500.withValues(alpha: 0.3),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: onPayPressed,
                     borderRadius: BorderRadius.circular(12),
                     child: Container(
                       height: 72, // Reduced height

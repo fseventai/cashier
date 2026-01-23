@@ -3,7 +3,9 @@ import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
 
 class CartSidebarV2 extends StatelessWidget {
-  const CartSidebarV2({super.key});
+  final VoidCallback? onPayPressed;
+
+  const CartSidebarV2({super.key, this.onPayPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class CartSidebarV2 extends StatelessWidget {
           const Expanded(child: _CartItemsList()),
 
           // Footer / Payment Summary
-          const _PaymentSummary(),
+          _PaymentSummary(onPayPressed: onPayPressed),
         ],
       ),
     );
@@ -287,7 +289,9 @@ class _CartItem extends StatelessWidget {
 }
 
 class _PaymentSummary extends StatelessWidget {
-  const _PaymentSummary();
+  final VoidCallback? onPayPressed;
+
+  const _PaymentSummary({this.onPayPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -425,7 +429,7 @@ class _PaymentSummary extends StatelessWidget {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: onPayPressed,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.emerald600,
                 foregroundColor: Colors.white,

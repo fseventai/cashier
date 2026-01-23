@@ -12,38 +12,29 @@ class UsersSecurityContent extends StatefulWidget {
 }
 
 class _UsersSecurityContentState extends State<UsersSecurityContent> {
-  String _activeTab = 'Users';
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final List<Map<String, dynamic>> users = [
+      {
+        'firstName': 'John',
+        'lastName': 'Doe',
+        'email': 'john.doe@example.com',
+        'accessLevel': 'Admin',
+        'isActive': true,
+      },
+      {
+        'firstName': 'Jane',
+        'lastName': 'Smith',
+        'email': 'jane.smith@example.com',
+        'accessLevel': 'User',
+        'isActive': false,
+      },
+    ];
+
     return Column(
       children: [
-        // Tabs
-        Container(
-          padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-          decoration: const BoxDecoration(
-            color: AppColors.surface,
-            border: Border(bottom: BorderSide(color: AppColors.surfaceBorder)),
-          ),
-          child: Row(
-            children: [
-              _TabButton(
-                label: 'Users',
-                isActive: _activeTab == 'Users',
-                onTap: () => setState(() => _activeTab = 'Users'),
-              ),
-              const SizedBox(width: 32),
-              _TabButton(
-                label: 'Security',
-                isActive: _activeTab == 'Security',
-                onTap: () => setState(() => _activeTab = 'Security'),
-              ),
-            ],
-          ),
-        ),
-
         // Content
         Expanded(
           child: Container(
@@ -53,90 +44,46 @@ class _UsersSecurityContentState extends State<UsersSecurityContent> {
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                const UserTable(),
-                const SizedBox(height: 16),
-
                 // Empty state area (No additional users found)
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.surfaceBorder,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    // Dashed border effect is tricky in pure Flutter without external package or custom painter.
-                    // For now using solid border with opacity or just standard border.
-                    // The screenshot shows dashed border.
-                    // I will implement a CustomPaint for dashed border if strictly needed,
-                    // but standard border with opacity is a good MVP.
-                    child: Opacity(
-                      opacity: 0.5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          HugeIcon(
-                            icon: HugeIcons
-                                .strokeRoundedGridOff, // Or GridOff material icon
-                            size: 48,
-                            color: isDark
-                                ? AppColors.slate500
-                                : AppColors.slate400,
+                users.isEmpty
+                    ? Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.surfaceBorder,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'No additional users found',
-                            style: AppTextStyles.bodySmall,
+                          child: Opacity(
+                            opacity: 0.5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                HugeIcon(
+                                  icon: HugeIcons.strokeRoundedGridOff,
+                                  size: 48,
+                                  color: isDark
+                                      ? AppColors.slate500
+                                      : AppColors.slate400,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'No additional users found',
+                                  style: AppTextStyles.bodySmall,
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                        ),
+                      )
+                    : UserTable(users: users),
               ],
             ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class _TabButton extends StatelessWidget {
-  final String label;
-  final bool isActive;
-  final VoidCallback onTap;
-
-  const _TabButton({
-    required this.label,
-    required this.isActive,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.only(bottom: 12),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: isActive ? AppColors.emerald500 : Colors.transparent,
-              width: 2,
-            ),
-          ),
-        ),
-        child: Text(
-          label,
-          style: AppTextStyles.bodyMedium.copyWith(
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-            color: isActive ? AppColors.emerald500 : AppColors.textMuted,
-          ),
-        ),
-      ),
     );
   }
 }

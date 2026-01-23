@@ -4,7 +4,9 @@ import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class UserTable extends StatelessWidget {
-  const UserTable({super.key});
+  const UserTable({super.key, required this.users});
+
+  final List<Map<String, dynamic>> users;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +49,6 @@ class UserTable extends StatelessWidget {
             isActive: true,
             isDark: isDark,
           ),
-          _EmptyRow(
-            isDark: isDark,
-          ), // Placeholder rows to match screenshot look
-          _EmptyRow(isDark: isDark, isStriped: true),
-          _EmptyRow(isDark: isDark),
         ],
       ),
     );
@@ -191,55 +188,6 @@ class _DataCell extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _EmptyRow extends StatelessWidget {
-  final bool isDark;
-  final bool isStriped;
-
-  const _EmptyRow({required this.isDark, this.isStriped = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 32,
-      decoration: BoxDecoration(
-        color: isStriped
-            ? (isDark
-                  ? AppColors.slate800.withValues(alpha: 0.5)
-                  : AppColors.slate50.withValues(alpha: 0.5))
-            : null,
-        border: const Border(
-          bottom: BorderSide(color: AppColors.surfaceBorder),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(flex: 2, child: _EmptyCell(isLast: false)),
-          Expanded(flex: 2, child: _EmptyCell(isLast: false)),
-          Expanded(flex: 3, child: _EmptyCell(isLast: false)),
-          Expanded(flex: 1, child: _EmptyCell(isLast: false)),
-          Expanded(flex: 1, child: _EmptyCell(isLast: true)),
-        ],
-      ),
-    );
-  }
-}
-
-class _EmptyCell extends StatelessWidget {
-  final bool isLast;
-  const _EmptyCell({required this.isLast});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: isLast
-          ? null
-          : const BoxDecoration(
-              border: Border(right: BorderSide(color: AppColors.surfaceBorder)),
-            ),
     );
   }
 }

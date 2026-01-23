@@ -7,6 +7,8 @@ import 'package:cashier/shared/widgets/pos/cart_summary.dart';
 import 'package:cashier/shared/widgets/pos/pos_sidebar.dart';
 
 import 'package:cashier/shared/widgets/pos/pos_menu_drawer.dart';
+import 'package:cashier/shared/widgets/pos/payment_modal.dart';
+import 'package:flutter/services.dart';
 
 class PosScreen extends StatefulWidget {
   const PosScreen({super.key});
@@ -28,39 +30,63 @@ class _PosScreenState extends State<PosScreen> {
     });
   }
 
+  void _showPaymentModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black.withValues(alpha: 0.4),
+      builder: (context) => const PaymentModal(
+        totalAmount:
+            59500, // This should come from a state manager or cart model
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isV2) {
       return PosScreenV2(onToggleLayout: _toggleLayout);
     }
 
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: AppColors.surfaceAlt,
-      endDrawer: const PosMenuDrawer(),
-      body: Row(
-        children: [
-          // Main Content (Left Panel) - 75%
-          Expanded(
-            flex: 3,
-            child: Column(
-              children: [
-                PosHeader(onToggleLayout: _toggleLayout),
-                // Product List Headers would go here or inside ProductList
-                const ProductList(),
-                const CartSummary(),
-              ],
+    return Focus(
+      autofocus: true,
+      onKeyEvent: (FocusNode node, KeyEvent event) {
+        if (event is KeyDownEvent &&
+            event.logicalKey == LogicalKeyboardKey.f10) {
+          _showPaymentModal();
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: AppColors.surfaceAlt,
+        endDrawer: const PosMenuDrawer(),
+        body: Row(
+          children: [
+            // Main Content (Left Panel) - 75%
+            Expanded(
+              flex: 3,
+              child: Column(
+                children: [
+                  PosHeader(onToggleLayout: _toggleLayout),
+                  // Product List Headers would go here or inside ProductList
+                  const ProductList(),
+                  const CartSummary(),
+                ],
+              ),
             ),
-          ),
 
-          // Sidebar (Right Panel) - 25%
-          Expanded(
-            flex: 1,
-            child: PosSidebar(
-              onMorePressed: () => _scaffoldKey.currentState?.openEndDrawer(),
+            // Sidebar (Right Panel) - 25%
+            Expanded(
+              flex: 1,
+              child: PosSidebar(
+                onMorePressed: () => _scaffoldKey.currentState?.openEndDrawer(),
+                onPayPressed: _showPaymentModal,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
