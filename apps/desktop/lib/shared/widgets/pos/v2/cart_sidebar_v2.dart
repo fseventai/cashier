@@ -10,7 +10,7 @@ class CartSidebarV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 420,
+      width: 200,
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(left: BorderSide(color: Color(0xFFF0F5F3))),

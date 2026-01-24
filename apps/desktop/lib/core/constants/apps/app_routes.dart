@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cashier/screens/pos_screen.dart';
 import 'package:cashier/screens/management_screen.dart';
 import 'package:cashier/screens/sales_history_screen.dart';
+import 'package:cashier/screens/cash_transaction_screen.dart';
 
 /// Represents a single route configuration
 class AppRoute {
@@ -22,6 +23,7 @@ class AppRoutes {
   static const String pos = '/';
   static const String management = '/management';
   static const String salesHistory = '/sales-history';
+  static const String cashTransaction = '/cash-transaction';
 
   // Route configurations
   static final List<AppRoute> _routes = [
@@ -35,6 +37,11 @@ class AppRoutes {
       path: salesHistory,
       name: 'Riwayat penjualan',
       builder: (context) => const SalesHistoryScreen(),
+    ),
+    AppRoute(
+      path: cashTransaction,
+      name: 'Uang Masuk / Keluar',
+      builder: (context) => const CashTransactionScreen(),
     ),
   ];
 

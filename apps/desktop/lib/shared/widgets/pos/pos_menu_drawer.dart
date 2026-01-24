@@ -95,7 +95,10 @@ class _PosMenuDrawerState extends State<PosMenuDrawer> with WindowListener {
                 _buildMenuItem(
                   icon: HugeIcons.strokeRoundedInbox,
                   label: 'Uang Masuk / Keluar  (pro)',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context); // Close drawer
+                    Navigator.pushNamed(context, AppRoutes.cashTransaction);
+                  },
                 ),
                 _buildMenuItem(
                   icon: HugeIcons

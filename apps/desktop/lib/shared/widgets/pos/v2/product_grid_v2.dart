@@ -75,7 +75,7 @@ class ProductGridV2 extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(24),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 280,
+        maxCrossAxisExtent: 200,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
         childAspectRatio: 0.72,

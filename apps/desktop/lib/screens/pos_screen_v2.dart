@@ -62,6 +62,7 @@ class _PosScreenV2State extends State<PosScreenV2> {
                 children: [
                   // Left Panel: Member Status + Product Grid
                   const Expanded(
+                    flex: 4,
                     child: Column(
                       children: [
                         MemberStatusBar(),
@@ -72,6 +73,7 @@ class _PosScreenV2State extends State<PosScreenV2> {
 
                   // Right Panel: Cart Sidebar
                   Expanded(
+                    flex: 2,
                     child: CartSidebarV2(onPayPressed: _showPaymentModal),
                   ),
                 ],
