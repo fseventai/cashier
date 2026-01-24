@@ -9,6 +9,7 @@ import 'package:cashier/shared/widgets/pos/pos_sidebar.dart';
 import 'package:cashier/shared/widgets/pos/pos_menu_drawer.dart';
 import 'package:cashier/shared/widgets/pos/payment_modal.dart';
 import 'package:cashier/shared/widgets/pos/quantity_input_modal.dart';
+import 'package:cashier/shared/widgets/pos/login_modal.dart';
 import 'package:flutter/services.dart';
 
 class PosScreen extends StatefulWidget {
@@ -21,6 +22,15 @@ class PosScreen extends StatefulWidget {
 class _PosScreenState extends State<PosScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isV2 = false;
+
+  void _showLoginModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+      builder: (context) => const LoginModal(),
+    );
+  }
 
   void _toggleLayout() {
     // Clear focus to avoid RawKeyboard assertion errors during tree replacement
@@ -69,6 +79,11 @@ class _PosScreenState extends State<PosScreen> {
         if (event is KeyDownEvent &&
             event.logicalKey == LogicalKeyboardKey.f10) {
           _showPaymentModal();
+          return KeyEventResult.handled;
+        }
+        if (event is KeyDownEvent &&
+            event.logicalKey == LogicalKeyboardKey.f1) {
+          _showLoginModal();
           return KeyEventResult.handled;
         }
         if (event is KeyDownEvent &&
