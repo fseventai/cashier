@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
+import 'package:cashier/shared/widgets/pos/payment_success_modal.dart';
 
 class PaymentModal extends StatefulWidget {
   final double totalAmount;
@@ -18,6 +19,7 @@ class _PaymentModalState extends State<PaymentModal> {
   final FocusNode _paymentFocusNode = FocusNode();
   String _paymentMethod = 'Tunai';
   double _paidAmount = 0;
+  bool _isSuccess = false;
 
   @override
   void initState() {
@@ -59,8 +61,11 @@ class _PaymentModalState extends State<PaymentModal> {
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      child: Container(
-        width: 900,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOutCubic,
+        width: _isSuccess ? 1000 : 900,
+        height: _isSuccess ? 700 : 650,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -73,41 +78,55 @@ class _PaymentModalState extends State<PaymentModal> {
             ),
           ],
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Header
-            _buildHeader(context),
-
-            // Content
-            Flexible(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(32),
-                child: Column(
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          child: _isSuccess
+              ? PaymentSuccessModal(
+                  key: const ValueKey('payment_success'),
+                  totalAmount: widget.totalAmount,
+                  paidAmount: _paidAmount,
+                  paymentMethod: _paymentMethod,
+                )
+              : Column(
+                  key: const ValueKey('payment_form'),
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Summary Cards
-                    _buildSummaryCards(),
-                    const SizedBox(height: 32),
+                    // Header
+                    _buildHeader(context),
 
-                    // Inputs Row
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Left Column
-                        Expanded(child: _buildLeftColumn()),
-                        const SizedBox(width: 40),
-                        // Right Column
-                        Expanded(child: _buildRightColumn()),
-                      ],
+                    // Content
+                    Flexible(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(32),
+                        child: Column(
+                          children: [
+                            // Summary Cards
+                            _buildSummaryCards(),
+                            const SizedBox(height: 32),
+
+                            // Inputs Row
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Left Column
+                                Expanded(child: _buildLeftColumn()),
+                                const SizedBox(width: 40),
+                                // Right Column
+                                Expanded(child: _buildRightColumn()),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+
+                    // Footer
+                    _buildFooter(context),
                   ],
                 ),
-              ),
-            ),
-
-            // Footer
-            _buildFooter(context),
-          ],
         ),
       ),
     );
@@ -452,7 +471,9 @@ class _PaymentModalState extends State<PaymentModal> {
               icon: HugeIcons.strokeRoundedSaveMoneyDollar,
               label: 'Bayar & Simpan',
               isPrimary: true,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                setState(() => _isSuccess = true);
+              },
             ),
           ),
           const SizedBox(width: 16),
@@ -461,7 +482,9 @@ class _PaymentModalState extends State<PaymentModal> {
               icon: HugeIcons.strokeRoundedPrinter,
               label: 'Bayar & Cetak',
               isPrimary: false,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                setState(() => _isSuccess = true);
+              },
             ),
           ),
         ],
