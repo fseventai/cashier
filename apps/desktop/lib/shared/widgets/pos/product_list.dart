@@ -2,42 +2,92 @@ import 'package:flutter/material.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
 
-class ProductList extends StatelessWidget {
+class ProductList extends StatefulWidget {
   const ProductList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Dummy Data matching the screenshot
-    final products = [
-      _ProductItem(
-        name: 'Air Mineral 600ml',
-        discountLabel: 'Hemat Anggota: @3.5k',
-        quantity: 2,
-        price: '3.500',
-        total: '7.000',
-        imageUrl:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuA5mGOd0URK_4lC4RnpMRZTcdXMp4_2T-ltx25PVnMKW63uuI_zRy9Luu2Psu3wDqRNBTvGLRHZrEPCXxyBvwsLsX4lyroDU_HpictP1eSJggMmd0RveGZDq1cLIQc4rZ9PwRkktgVTrTp4FsGgFw4COIXeFDUY8Y6qnIGh-p91BO_Nkg4FHK99fdWcgXovYZG0wi_w3DL_obh0gDz-U8l3mknLK91gGd2AeV086zu8omWdjwuvts3UE0sbHhgzvCIcwqDb1OoO3S8',
-      ),
-      _ProductItem(
-        name: 'Roti Tawar Kupas',
-        discountLabel: 'Hemat Anggota: @13.5k',
-        quantity: 1,
-        price: '13.500',
-        total: '13.500',
-        imageUrl:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuBU9CEK7C7B-RbkjF4lF5n7EALl2zGBYmc19Ea8ol3Nm_PmvElyjQEDxlJkSIXSfUdE3G09c4Ve0RBR9LiykB-mk5jnEbwOGcFCVSH2pZjGCbZtpvYccP4qS5bteUmDRdx395AkgWLkUOWyfKGUM23od8mcAq0z3GPXcLvpxw2OeAnrwgFYksfcoZMXULm5G1l4fiUJaFTpD5MSPrh57NkjFj2ByM0T7nhEEODeuqUiOmPrZINljLGpn3a47mnV7qQZZthwcPR4zKk',
-      ),
-      _ProductItem(
-        name: 'Biskuit Coklat Family',
-        discountLabel: 'Hemat Anggota: @19.5k',
-        quantity: 2,
-        price: '19.500',
-        total: '39.000',
-        imageUrl:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuBH7wYlmTbXP8XlibToNkGeEj6AXNdD29Qoa_qIXjk-4WnAG9hN2jmLeeEyq5h5USxJbYRSzet3OxbBaRr59VYTnnJkHe6ocxhqT4WEBl-pHPgE5gkaFhG4D85MwbWy7ycU5z4dgO7GQoXfXc0BpAoF6eB1qZvWTckrrAYTSXBRsPRlVtqJWQMlZHmDaCC-wxx0r_ii85s8z3sTo45pccNk7q25zOMk0WNP2_IhDEW40bmw8jO6Cd-jpFkrvK-gJxRqqRgO1X9lIZ0',
-      ),
-    ];
+  State<ProductList> createState() => _ProductListState();
+}
 
+class _ProductListState extends State<ProductList> {
+  // Products moved to state
+  final List<_ProductItem> _products = [
+    _ProductItem(
+      name: 'Air Mineral 600ml',
+      discountLabel: 'Hemat Anggota: @3.5k',
+      quantity: 2,
+      price: '3.500',
+      total: '7.000',
+      imageUrl:
+          'https://lh3.googleusercontent.com/aida-public/AB6AXuA5mGOd0URK_4lC4RnpMRZTcdXMp4_2T-ltx25PVnMKW63uuI_zRy9Luu2Psu3wDqRNBTvGLRHZrEPCXxyBvwsLsX4lyroDU_HpictP1eSJggMmd0RveGZDq1cLIQc4rZ9PwRkktgVTrTp4FsGgFw4COIXeFDUY8Y6qnIGh-p91BO_Nkg4FHK99fdWcgXovYZG0wi_w3DL_obh0gDz-U8l3mknLK91gGd2AeV086zu8omWdjwuvts3UE0sbHhgzvCIcwqDb1OoO3S8',
+    ),
+    _ProductItem(
+      name: 'Roti Tawar Kupas',
+      discountLabel: 'Hemat Anggota: @13.5k',
+      quantity: 1,
+      price: '13.500',
+      total: '13.500',
+      imageUrl:
+          'https://lh3.googleusercontent.com/aida-public/AB6AXuBU9CEK7C7B-RbkjF4lF5n7EALl2zGBYmc19Ea8ol3Nm_PmvElyjQEDxlJkSIXSfUdE3G09c4Ve0RBR9LiykB-mk5jnEbwOGcFCVSH2pZjGCbZtpvYccP4qS5bteUmDRdx395AkgWLkUOWyfKGUM23od8mcAq0z3GPXcLvpxw2OeAnrwgFYksfcoZMXULm5G1l4fiUJaFTpD5MSPrh57NkjFj2ByM0T7nhEEODeuqUiOmPrZINljLGpn3a47mnV7qQZZthwcPR4zKk',
+    ),
+    _ProductItem(
+      name: 'Biskuit Coklat Family',
+      discountLabel: 'Hemat Anggota: @19.5k',
+      quantity: 2,
+      price: '19.500',
+      total: '39.000',
+      imageUrl:
+          'https://lh3.googleusercontent.com/aida-public/AB6AXuBH7wYlmTbXP8XlibToNkGeEj6AXNdD29Qoa_qIXjk-4WnAG9hN2jmLeeEyq5h5USxJbYRSzet3OxbBaRr59VYTnnJkHe6ocxhqT4WEBl-pHPgE5gkaFhG4D85MwbWy7ycU5z4dgO7GQoXfXc0BpAoF6eB1qZvWTckrrAYTSXBRsPRlVtqJWQMlZHmDaCC-wxx0r_ii85s8z3sTo45pccNk7q25zOMk0WNP2_IhDEW40bmw8jO6Cd-jpFkrvK-gJxRqqRgO1X9lIZ0',
+    ),
+  ];
+
+  final Set<int> _selectedIndices = {};
+
+  @override
+  void initState() {
+    super.initState();
+    // Automatically select all items initially to simulate new purchase selection
+    for (int i = 0; i < _products.length; i++) {
+      _selectedIndices.add(i);
+    }
+  }
+
+  void _toggleSelection(int index) {
+    setState(() {
+      if (_selectedIndices.contains(index)) {
+        _selectedIndices.remove(index);
+      } else {
+        _selectedIndices.add(index);
+      }
+    });
+  }
+
+  void _toggleSelectAll() {
+    setState(() {
+      if (_selectedIndices.length == _products.length) {
+        _selectedIndices.clear();
+      } else {
+        _selectedIndices.clear();
+        for (int i = 0; i < _products.length; i++) {
+          _selectedIndices.add(i);
+        }
+      }
+    });
+  }
+
+  // void _deleteSelected() {
+  //   setState(() {
+  //     final sortedIndices = _selectedIndices.toList()
+  //       ..sort((a, b) => b.compareTo(a));
+  //     for (final index in sortedIndices) {
+  //       _products.removeAt(index);
+  //     }
+  //     _selectedIndices.clear();
+  //   });
+  // }
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: Column(
         children: [
@@ -50,7 +100,37 @@ class ProductList extends StatelessWidget {
             ),
             child: Row(
               children: [
-                _buildHeaderCell('Nama Produk', flex: 45),
+                // Selection Header
+                SizedBox(
+                  width: 64,
+                  child: Center(
+                    child: Checkbox(
+                      value:
+                          _products.isNotEmpty &&
+                          _selectedIndices.length == _products.length,
+                      onChanged: (value) => _toggleSelectAll(),
+                      activeColor: AppColors.emerald600,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 37,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: [
+                        Text(
+                          'Nama Produk'.toUpperCase(),
+                          style: AppTextStyles.tableHeader,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 _buildHeaderCell(
                   'Kuantitas',
                   flex: 15,
@@ -76,15 +156,22 @@ class ProductList extends StatelessWidget {
               color: Colors.white,
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: products.length,
+                itemCount: _products.length,
                 itemBuilder: (context, index) {
-                  final product = products[index];
+                  final product = _products[index];
                   final isEven = index % 2 == 0;
                   final backgroundColor = isEven
                       ? Colors.white
                       : AppColors.surfaceAlt;
 
-                  return _buildProductRow(product, backgroundColor);
+                  final isSelected = _selectedIndices.contains(index);
+
+                  return _buildProductRow(
+                    index,
+                    product,
+                    backgroundColor,
+                    isSelected,
+                  );
                 },
               ),
             ),
@@ -109,11 +196,18 @@ class ProductList extends StatelessWidget {
     );
   }
 
-  Widget _buildProductRow(_ProductItem product, Color backgroundColor) {
+  Widget _buildProductRow(
+    int index,
+    _ProductItem product,
+    Color backgroundColor,
+    bool isSelected,
+  ) {
     return Container(
       height: 80, // h-20
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: isSelected
+            ? AppColors.emerald50.withValues(alpha: 0.3)
+            : backgroundColor,
         border: const Border(
           bottom: BorderSide(color: AppColors.surfaceBorder),
         ),
@@ -121,15 +215,30 @@ class ProductList extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {}, // Hover effect simulation
+          onTap: () => _toggleSelection(index),
           hoverColor: AppColors.emerald50.withValues(alpha: 0.4),
           child: Row(
             children: [
-              // Name Column (45%)
+              // Checkbox Column
+              SizedBox(
+                width: 64,
+                child: Center(
+                  child: Checkbox(
+                    value: isSelected,
+                    onChanged: (value) => _toggleSelection(index),
+                    activeColor: AppColors.emerald600,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Name Column (37%)
               Expanded(
-                flex: 45,
+                flex: 37,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
                     children: [
                       Container(

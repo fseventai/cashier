@@ -10,6 +10,10 @@ class AppColors {
   static const Color emerald800 = Color(0xFF065f46);
   static const Color emerald900 = Color(0xFF064e3b);
 
+  // Rose
+  static const Color rose500 = Color(0xFFf43f5e);
+  static const Color rose600 = Color(0xFFe11d48);
+
   // Charcoal
   static const Color charcoal800 = Color(0xFF1f2937);
   static const Color charcoal900 = Color(0xFF111827);

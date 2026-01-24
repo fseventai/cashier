@@ -205,7 +205,6 @@ class _SalesHistoryScreenState extends State<SalesHistoryScreen> {
         _startDate = picked.start;
         _endDate = picked.end;
       });
-      // TODO: Reload data based on new date range
     }
   }
 
