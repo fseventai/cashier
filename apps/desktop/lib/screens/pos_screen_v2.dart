@@ -1,3 +1,4 @@
+import 'package:cashier/shared/utils/keyboard_binder.dart';
 import 'package:cashier/shared/widgets/pos/pos_menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
@@ -6,6 +7,7 @@ import 'package:cashier/shared/widgets/pos/v2/member_status_bar.dart';
 import 'package:cashier/shared/widgets/pos/v2/product_grid_v2.dart';
 import 'package:cashier/shared/widgets/pos/v2/cart_sidebar_v2.dart';
 import 'package:cashier/shared/widgets/pos/payment_modal.dart';
+import 'package:cashier/shared/widgets/pos/quantity_input_modal.dart';
 import 'package:flutter/services.dart';
 
 class PosScreenV2 extends StatefulWidget {
@@ -32,17 +34,27 @@ class _PosScreenV2State extends State<PosScreenV2> {
     );
   }
 
+  void _showQuantityModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withValues(alpha: 0.4),
+      builder: (context) => const QuantityInputModal(),
+    ).then((value) {
+      if (value != null) {
+        // Handle the returned quantity value
+        debugPrint('Confirmed Quantity: $value');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      autofocus: true,
-      onKeyEvent: (FocusNode node, KeyEvent event) {
-        if (event is KeyDownEvent &&
-            event.logicalKey == LogicalKeyboardKey.f10) {
-          _showPaymentModal();
-          return KeyEventResult.handled;
-        }
-        return KeyEventResult.ignored;
+    return KeyboardBinder(
+      bindings: {
+        LogicalKeyboardKey.f6: _showQuantityModal,
+        LogicalKeyboardKey.f10: _showPaymentModal,
+        LogicalKeyboardKey.escape: () => Navigator.pop(context),
       },
       child: Scaffold(
         key: _scaffoldKey,

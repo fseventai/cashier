@@ -8,6 +8,7 @@ import 'package:cashier/shared/widgets/pos/pos_sidebar.dart';
 
 import 'package:cashier/shared/widgets/pos/pos_menu_drawer.dart';
 import 'package:cashier/shared/widgets/pos/payment_modal.dart';
+import 'package:cashier/shared/widgets/pos/quantity_input_modal.dart';
 import 'package:flutter/services.dart';
 
 class PosScreen extends StatefulWidget {
@@ -42,6 +43,20 @@ class _PosScreenState extends State<PosScreen> {
     );
   }
 
+  void _showQuantityModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withValues(alpha: 0.4),
+      builder: (context) => const QuantityInputModal(),
+    ).then((value) {
+      if (value != null) {
+        // Handle the returned quantity value
+        debugPrint('Confirmed Quantity: $value');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isV2) {
@@ -54,6 +69,11 @@ class _PosScreenState extends State<PosScreen> {
         if (event is KeyDownEvent &&
             event.logicalKey == LogicalKeyboardKey.f10) {
           _showPaymentModal();
+          return KeyEventResult.handled;
+        }
+        if (event is KeyDownEvent &&
+            event.logicalKey == LogicalKeyboardKey.f6) {
+          _showQuantityModal();
           return KeyEventResult.handled;
         }
         return KeyEventResult.ignored;
@@ -83,6 +103,7 @@ class _PosScreenState extends State<PosScreen> {
               child: PosSidebar(
                 onMorePressed: () => _scaffoldKey.currentState?.openEndDrawer(),
                 onPayPressed: _showPaymentModal,
+                onQtyPressed: _showQuantityModal,
               ),
             ),
           ],

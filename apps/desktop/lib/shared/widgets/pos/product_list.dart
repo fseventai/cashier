@@ -1,3 +1,4 @@
+import 'package:cashier/shared/components/quantity_state.dart';
 import 'package:flutter/material.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
@@ -46,9 +47,9 @@ class _ProductListState extends State<ProductList> {
   @override
   void initState() {
     super.initState();
-    // Automatically select all items initially to simulate new purchase selection
-    for (int i = 0; i < _products.length; i++) {
-      _selectedIndices.add(i);
+    // Only select the first index initially
+    if (_products.isNotEmpty) {
+      _selectedIndices.add(0);
     }
   }
 
@@ -85,6 +86,36 @@ class _ProductListState extends State<ProductList> {
   //     _selectedIndices.clear();
   //   });
   // }
+
+  void _incrementQuantity(int index) {
+    setState(() {
+      final product = _products[index];
+      _products[index] = _ProductItem(
+        name: product.name,
+        discountLabel: product.discountLabel,
+        quantity: product.quantity + 1,
+        price: product.price,
+        total: product.total, // In a real app, this should be recalculated
+        imageUrl: product.imageUrl,
+      );
+    });
+  }
+
+  void _decrementQuantity(int index) {
+    setState(() {
+      final product = _products[index];
+      if (product.quantity > 1) {
+        _products[index] = _ProductItem(
+          name: product.name,
+          discountLabel: product.discountLabel,
+          quantity: product.quantity - 1,
+          price: product.price,
+          total: product.total,
+          imageUrl: product.imageUrl,
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +165,7 @@ class _ProductListState extends State<ProductList> {
                 _buildHeaderCell(
                   'Kuantitas',
                   flex: 15,
-                  align: Alignment.centerRight,
+                  align: Alignment.center,
                 ),
                 _buildHeaderCell(
                   'Harga',
@@ -297,34 +328,11 @@ class _ProductListState extends State<ProductList> {
               Expanded(
                 flex: 15,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.surface,
-                        border: Border.all(color: AppColors.surfaceBorder),
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
-                            blurRadius: 2,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        '${product.quantity}',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.charcoal900,
-                        ),
-                      ),
-                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: 35),
+                  child: QuantityState(
+                    quantity: product.quantity,
+                    onPlus: () => _incrementQuantity(index),
+                    onMinus: () => _decrementQuantity(index),
                   ),
                 ),
               ),

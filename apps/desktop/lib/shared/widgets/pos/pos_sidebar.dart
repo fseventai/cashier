@@ -7,8 +7,14 @@ import 'package:cashier/core/constants/apps/app_text_styles.dart';
 class PosSidebar extends StatelessWidget {
   final VoidCallback? onMorePressed;
   final VoidCallback? onPayPressed;
+  final VoidCallback? onQtyPressed;
 
-  const PosSidebar({super.key, this.onMorePressed, this.onPayPressed});
+  const PosSidebar({
+    super.key,
+    this.onMorePressed,
+    this.onPayPressed,
+    this.onQtyPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +47,9 @@ class PosSidebar extends StatelessWidget {
                 ),
                 _ActionButton(
                   icon: HugeIcons.strokeRoundedPackage01,
-                  label: 'Kqty',
+                  label: 'Qty',
                   shortcut: 'F6',
+                  onTap: onQtyPressed,
                 ),
                 _ActionButton(
                   icon: HugeIcons.strokeRoundedShoppingBasket01,
@@ -321,8 +328,14 @@ class _ActionButton extends StatelessWidget {
   final List<List<dynamic>> icon;
   final String label;
   final String? shortcut;
+  final VoidCallback? onTap;
 
-  const _ActionButton({required this.icon, required this.label, this.shortcut});
+  const _ActionButton({
+    required this.icon,
+    required this.label,
+    this.shortcut,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -334,7 +347,7 @@ class _ActionButton extends StatelessWidget {
       ),
       elevation: 0,
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         hoverColor: AppColors.emerald50,
         child: Stack(
