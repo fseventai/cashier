@@ -1,4 +1,5 @@
 import 'package:cashier/screens/pos_screen_v2.dart';
+import 'package:cashier/shared/utils/keyboard_binder.dart';
 import 'package:flutter/material.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/shared/widgets/pos/pos_header.dart';
@@ -10,6 +11,8 @@ import 'package:cashier/shared/widgets/pos/pos_menu_drawer.dart';
 import 'package:cashier/shared/widgets/pos/payment_modal.dart';
 import 'package:cashier/shared/widgets/pos/quantity_input_modal.dart';
 import 'package:cashier/shared/widgets/pos/login_modal.dart';
+import 'package:cashier/shared/widgets/pos/shift_opening_modal.dart';
+import 'package:cashier/shared/widgets/pos/shift_closing_modal.dart';
 import 'package:flutter/services.dart';
 
 class PosScreen extends StatefulWidget {
@@ -67,31 +70,38 @@ class _PosScreenState extends State<PosScreen> {
     });
   }
 
+  void _showShiftOpeningModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+      builder: (context) => const ShiftOpeningModal(),
+    );
+  }
+
+  void _showShiftClosingModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+      builder: (context) => const ShiftClosingModal(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isV2) {
       return PosScreenV2(onToggleLayout: _toggleLayout);
     }
 
-    return Focus(
-      autofocus: true,
-      onKeyEvent: (FocusNode node, KeyEvent event) {
-        if (event is KeyDownEvent &&
-            event.logicalKey == LogicalKeyboardKey.f10) {
-          _showPaymentModal();
-          return KeyEventResult.handled;
-        }
-        if (event is KeyDownEvent &&
-            event.logicalKey == LogicalKeyboardKey.f1) {
-          _showLoginModal();
-          return KeyEventResult.handled;
-        }
-        if (event is KeyDownEvent &&
-            event.logicalKey == LogicalKeyboardKey.f6) {
-          _showQuantityModal();
-          return KeyEventResult.handled;
-        }
-        return KeyEventResult.ignored;
+    return KeyboardBinder(
+      bindings: {
+        LogicalKeyboardKey.f1: _showLoginModal,
+        LogicalKeyboardKey.f6: _showQuantityModal,
+        LogicalKeyboardKey.f7: _showShiftOpeningModal,
+        LogicalKeyboardKey.f8: _showShiftClosingModal,
+        LogicalKeyboardKey.f10: _showPaymentModal,
+        LogicalKeyboardKey.escape: () => Navigator.pop(context),
       },
       child: Scaffold(
         key: _scaffoldKey,

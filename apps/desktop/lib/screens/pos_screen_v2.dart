@@ -9,6 +9,8 @@ import 'package:cashier/shared/widgets/pos/v2/cart_sidebar_v2.dart';
 import 'package:cashier/shared/widgets/pos/payment_modal.dart';
 import 'package:cashier/shared/widgets/pos/quantity_input_modal.dart';
 import 'package:cashier/shared/widgets/pos/login_modal.dart';
+import 'package:cashier/shared/widgets/pos/shift_opening_modal.dart';
+import 'package:cashier/shared/widgets/pos/shift_closing_modal.dart';
 import 'package:flutter/services.dart';
 
 class PosScreenV2 extends StatefulWidget {
@@ -58,12 +60,32 @@ class _PosScreenV2State extends State<PosScreenV2> {
     });
   }
 
+  void _showShiftOpeningModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+      builder: (context) => const ShiftOpeningModal(),
+    );
+  }
+
+  void _showShiftClosingModal() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+      builder: (context) => const ShiftClosingModal(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return KeyboardBinder(
       bindings: {
         LogicalKeyboardKey.f1: _showLoginModal,
         LogicalKeyboardKey.f6: _showQuantityModal,
+        LogicalKeyboardKey.f7: _showShiftOpeningModal,
+        LogicalKeyboardKey.f8: _showShiftClosingModal,
         LogicalKeyboardKey.f10: _showPaymentModal,
         LogicalKeyboardKey.escape: () => Navigator.pop(context),
       },

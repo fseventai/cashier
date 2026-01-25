@@ -32,15 +32,16 @@ class QuantityState extends StatelessWidget {
         ],
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
             onPressed: onMinus ?? () {},
             icon: const Icon(Icons.remove, size: 14),
-            padding: EdgeInsets.all(4),
-            constraints: const BoxConstraints(minWidth: 24),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
           ),
           SizedBox(
-            width: 20,
+            width: 18,
             child: Text(
               '$quantity',
               textAlign: TextAlign.center,
@@ -52,8 +53,8 @@ class QuantityState extends StatelessWidget {
           IconButton(
             onPressed: onPlus ?? () {},
             icon: const Icon(Icons.add, size: 14),
-            padding: EdgeInsets.all(4),
-            constraints: const BoxConstraints(minWidth: 24),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
           ),
         ],
       ),

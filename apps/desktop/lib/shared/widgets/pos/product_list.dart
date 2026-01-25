@@ -325,11 +325,11 @@ class _ProductListState extends State<ProductList> {
                 ),
               ),
 
-              // Quantity Column (15%)
               Expanded(
                 flex: 15,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 35),
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: QuantityState(
                     quantity: product.quantity,
                     onPlus: () => _incrementQuantity(index),
