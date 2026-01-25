@@ -1,6 +1,6 @@
 import { Elysia, t } from "elysia";
-import { db } from "../index";
-import { StockService } from "@cashier/database";
+import { db } from "@/server/db";
+import { StockService } from "@/server/services";
 
 const stockService = new StockService(db);
 

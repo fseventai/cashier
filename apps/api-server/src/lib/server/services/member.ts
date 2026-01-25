@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import * as schema from "../schema";
-import { members } from "../schema";
+import * as schema from "@/server/db/schema";
+import { members } from "@/server/db/schema";
 
 export class MemberService {
   constructor(private db: PostgresJsDatabase<typeof schema>) {}

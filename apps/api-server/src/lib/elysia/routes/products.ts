@@ -1,11 +1,11 @@
 import { Elysia, t } from "elysia";
-import { db } from "../index";
+import { db } from "@/server/db";
 import {
   ProductService,
   TaxService,
   ProductGroupService,
   StorageLocationService,
-} from "@cashier/database";
+} from "@/server/services";
 
 const productService = new ProductService(db);
 const taxService = new TaxService(db);

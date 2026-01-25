@@ -1,37 +1,38 @@
+import { db } from "@/server/db";
+import { CustomerService } from "@/server/services";
 import { Elysia, t } from "elysia";
-import { db } from "../index";
-import { CompanyService } from "@cashier/database";
 
-const companyService = new CompanyService(db);
+const customerService = new CustomerService(db);
 
-export const companyRoutes = new Elysia({ prefix: "/companies" })
+export const customerRoutes = new Elysia({ prefix: "/customers" })
   .get("/", async () => {
-    return await companyService.getCompanies();
+    return await customerService.getCustomers();
   })
   .get("/:id", async ({ params: { id }, set }) => {
-    const company = await companyService.getCompanyById(id);
-    if (!company) {
+    const customer = await customerService.getCustomerById(id);
+    if (!customer) {
       set.status = 404;
-      return "Company not found";
+      return "Customer not found";
     }
-    return company;
+    return customer;
   })
   .post(
     "/",
     async ({ body }) => {
       const id = crypto.randomUUID();
       const now = new Date();
-      const company = await companyService.createCompany({
+      const customer = await customerService.createCustomer({
         ...body,
         id,
         createdAt: now,
         updatedAt: now,
       });
-      return company;
+      return customer;
     },
     {
       body: t.Object({
         name: t.String(),
+        code: t.Optional(t.String()),
         taxNumber: t.Optional(t.String()),
         streetName: t.Optional(t.String()),
         buildingNumber: t.Optional(t.String()),
@@ -40,29 +41,24 @@ export const companyRoutes = new Elysia({ prefix: "/companies" })
         district: t.Optional(t.String()),
         postalCode: t.Optional(t.String()),
         city: t.Optional(t.String()),
-        province: t.Optional(t.String()),
-        country: t.Optional(t.String()),
-        phone: t.Optional(t.String()),
-        email: t.Optional(t.String()),
-        bankAccountNumber: t.Optional(t.String()),
-        bankDetails: t.Optional(t.String()),
-        logo: t.Optional(t.String()),
+        state: t.Optional(t.String()),
       }),
     },
   )
   .patch(
     "/:id",
     async ({ params: { id }, body, set }) => {
-      const company = await companyService.updateCompany(id, body);
-      if (!company) {
+      const customer = await customerService.updateCustomer(id, body);
+      if (!customer) {
         set.status = 404;
-        return "Company not found";
+        return "Customer not found";
       }
-      return company;
+      return customer;
     },
     {
       body: t.Object({
         name: t.Optional(t.String()),
+        code: t.Optional(t.String()),
         taxNumber: t.Optional(t.String()),
         streetName: t.Optional(t.String()),
         buildingNumber: t.Optional(t.String()),
@@ -71,21 +67,15 @@ export const companyRoutes = new Elysia({ prefix: "/companies" })
         district: t.Optional(t.String()),
         postalCode: t.Optional(t.String()),
         city: t.Optional(t.String()),
-        province: t.Optional(t.String()),
-        country: t.Optional(t.String()),
-        phone: t.Optional(t.String()),
-        email: t.Optional(t.String()),
-        bankAccountNumber: t.Optional(t.String()),
-        bankDetails: t.Optional(t.String()),
-        logo: t.Optional(t.String()),
+        state: t.Optional(t.String()),
       }),
     },
   )
   .delete("/:id", async ({ params: { id }, set }) => {
-    const company = await companyService.deleteCompany(id);
-    if (!company) {
+    const customer = await customerService.deleteCustomer(id);
+    if (!customer) {
       set.status = 404;
-      return "Company not found";
+      return "Customer not found";
     }
     return { success: true };
   });

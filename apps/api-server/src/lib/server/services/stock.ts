@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import * as schema from "../schema";
-import { stockMovements, products } from "../schema";
+import * as schema from "@/server/db/schema";
+import { stockMovements, products } from "@/server/db/schema";
 
 export class StockService {
   constructor(private db: PostgresJsDatabase<typeof schema>) {}
