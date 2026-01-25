@@ -1,14 +1,14 @@
+import "dotenv/config";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { faker } from "@faker-js/faker";
-import { DATABASE_URL } from "$env/static/private";
 import * as schema from "./schema";
 
-if (!DATABASE_URL) {
+if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is not defined");
 }
 
-const client = postgres(DATABASE_URL);
+const client = postgres(process.env.DATABASE_URL);
 const db = drizzle(client, { schema });
 
 async function seed() {
@@ -118,7 +118,7 @@ async function seed() {
         stockQuantity: faker.number.int({ min: 0, max: 100 }).toString(),
         minStockLevel: "10",
         reorderPoint: "20",
-        image: faker.image.urlLoremFlickr({ category: "food" }),
+        image: faker.image.url(),
         createdAt: new Date(),
         updatedAt: new Date(),
       });

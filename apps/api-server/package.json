@@ -22,7 +22,7 @@
     "@sveltejs/kit": "latest",
     "@sveltejs/vite-plugin-svelte": "latest",
     "@types/node": "^25.0.10",
-    "drizzle-kit": "0.31.8",
+    "drizzle-kit": "0.30.2",
     "svelte": "latest",
     "svelte-check": "latest",
     "tslib": "latest",
