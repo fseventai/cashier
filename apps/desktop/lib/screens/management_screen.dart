@@ -1,8 +1,5 @@
 import 'package:cashier/shared/models/breadcrumb_item.dart';
 import 'package:cashier/shared/models/management_page_config.dart';
-import 'package:cashier/shared/widgets/management/categories/categories_content_area.dart';
-import 'package:cashier/shared/widgets/management/categories/categories_drawer.dart';
-import 'package:cashier/shared/widgets/management/categories/categories_toolbar.dart';
 import 'package:cashier/shared/widgets/management/company/company_content_area.dart';
 import 'package:cashier/shared/widgets/management/members/members_content_area.dart';
 import 'package:cashier/shared/widgets/management/members/members_drawer.dart';
@@ -85,13 +82,6 @@ class _ManagementScreenState extends State<ManagementScreen> {
               Expanded(child: ProductContentArea(onNewProduct: _openDrawer)),
             ],
           ),
-        );
-
-      case 'categories':
-        return ManagementPageConfig(
-          toolbar: CategoriesToolbar(onAdd: _openDrawer),
-          drawer: const CategoriesDrawer(),
-          content: const CategoriesContentArea(),
         );
 
       case 'customers':
