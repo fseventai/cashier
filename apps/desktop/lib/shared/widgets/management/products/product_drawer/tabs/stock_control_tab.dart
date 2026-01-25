@@ -27,7 +27,7 @@ class StockControlTab extends StatelessWidget {
                 initialValue: '0',
               ),
             ),
-            const SizedBox(width: 24),
+            SizedBox(width: 24),
             Expanded(
               child: ProductDropdown(
                 label: 'Storage location',

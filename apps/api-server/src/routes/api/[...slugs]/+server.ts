@@ -1,9 +1,11 @@
 import { Elysia } from "elysia";
 import { node } from "@elysiajs/node";
 import { auth } from "$lib/server";
+import { productRoutes } from "$lib/server/routes/products";
 
 const app = new Elysia({ prefix: "/api" })
   .get("/health", () => ({ status: "ok" }))
+  .use(productRoutes)
   .get("/auth/*", ({ request }) => auth.handler(request))
   .post("/auth/*", ({ request }) => auth.handler(request));
 

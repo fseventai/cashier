@@ -3,10 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  app_links
   print_bluetooth_thermal
   screen_retriever_windows
-  url_launcher_windows
   window_manager
 )
 

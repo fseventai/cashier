@@ -12,6 +12,7 @@ class ProductTextField extends StatelessWidget {
   final String? placeholder;
   final String? suffix;
   final TextInputType? keyboardType;
+  final ValueChanged<String>? onChanged;
 
   const ProductTextField({
     super.key,
@@ -24,6 +25,7 @@ class ProductTextField extends StatelessWidget {
     this.placeholder,
     this.suffix,
     this.keyboardType,
+    this.onChanged,
   });
 
   @override
@@ -46,6 +48,7 @@ class ProductTextField extends StatelessWidget {
           child: TextFormField(
             initialValue: initialValue,
             maxLines: maxLines,
+            onChanged: onChanged,
             keyboardType: keyboardType,
             style: AppTextStyles.bodySmall.copyWith(color: AppColors.slate800),
             decoration: InputDecoration(

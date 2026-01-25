@@ -4,18 +4,20 @@ import 'package:cashier/shared/widgets/management/products/product_drawer/compon
 import 'package:cashier/shared/widgets/management/products/product_drawer/tabs/details_tab.dart';
 import 'package:cashier/shared/widgets/management/products/product_drawer/tabs/price_and_tax_tab.dart';
 import 'package:cashier/shared/widgets/management/products/product_drawer/tabs/stock_control_tab.dart';
+import 'package:cashier/core/providers/product_provider.dart';
 import 'package:cashier/shared/widgets/management/products/product_drawer/tabs/comments_tab.dart';
 import 'package:cashier/shared/widgets/management/products/product_drawer/tabs/image_and_color_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProductDrawer extends StatefulWidget {
+class ProductDrawer extends ConsumerStatefulWidget {
   const ProductDrawer({super.key});
 
   @override
-  State<ProductDrawer> createState() => _ProductDrawerState();
+  ConsumerState<ProductDrawer> createState() => _ProductDrawerState();
 }
 
-class _ProductDrawerState extends State<ProductDrawer> {
+class _ProductDrawerState extends ConsumerState<ProductDrawer> {
   int _activeTab = 0;
   final List<String> _tabs = [
     'Details',
@@ -47,9 +49,16 @@ class _ProductDrawerState extends State<ProductDrawer> {
           Expanded(child: _buildTabContent()),
 
           // Footer
+          // Footer
           FooterProductDrawer(
             onCancel: () => Navigator.of(context).pop(),
-            onSave: () {},
+            onSave: () async {
+              final product = ref.read(productFormProvider);
+              await ref.read(productListProvider.notifier).saveProduct(product);
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
+            },
           ),
         ],
       ),

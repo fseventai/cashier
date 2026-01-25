@@ -6,8 +6,9 @@
   "types": "./src/index.ts",
   "type": "module",
   "dependencies": {
-    "better-auth": "latest",
-    "@cashier/database": "workspace:*"
+    "@cashier/database": "workspace:*",
+    "@node-rs/argon2": "^2.0.2",
+    "better-auth": "latest"
   },
   "devDependencies": {
     "typescript": "latest"

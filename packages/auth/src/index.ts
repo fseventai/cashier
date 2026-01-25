@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import * as schema from "@cashier/database";
+import { hashPassword, verifyPassword } from "./password";
 
 export const createAuth = (db: any) => {
   return betterAuth({
@@ -12,6 +13,10 @@ export const createAuth = (db: any) => {
     }),
     emailAndPassword: {
       enabled: true,
+      password: {
+        hash: hashPassword,
+        verify: verifyPassword,
+      },
     },
   });
 };
