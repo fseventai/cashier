@@ -14,6 +14,12 @@ class AppColors {
   static const Color rose500 = Color(0xFFf43f5e);
   static const Color rose600 = Color(0xFFe11d48);
 
+  // Violet
+  static const Color violet500 = Color(0xFF8b5cf6);
+
+  // Fuchsia
+  static const Color fuchsia500 = Color(0xFFd946ef);
+
   // Charcoal
   static const Color charcoal800 = Color(0xFF1f2937);
   static const Color charcoal900 = Color(0xFF111827);

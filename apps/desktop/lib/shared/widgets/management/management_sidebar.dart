@@ -57,13 +57,6 @@ class ManagementSidebar extends StatelessWidget {
                   isDark: isDark,
                 ),
                 PosNavigationButton(
-                  label: 'Categories',
-                  icon: HugeIcons.strokeRoundedTags,
-                  isActive: activeRoute == 'categories',
-                  onTap: () => onRouteSelected('categories'),
-                  isDark: isDark,
-                ),
-                PosNavigationButton(
                   label: 'Products',
                   icon: HugeIcons.strokeRoundedPackage01,
                   isActive: activeRoute == 'products',
