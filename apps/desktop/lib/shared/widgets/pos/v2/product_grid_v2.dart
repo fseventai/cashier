@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
 
@@ -147,9 +148,25 @@ class _ProductCardState extends State<_ProductCard> {
                         child: AnimatedScale(
                           scale: _isHovered ? 1.1 : 1.0,
                           duration: const Duration(milliseconds: 500),
-                          child: Image.network(
-                            p['image'] as String,
+                          child: CachedNetworkImage(
+                            imageUrl: p['image'] as String,
                             fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              color: AppColors.slate100,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.emerald500,
+                                ),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              color: AppColors.slate100,
+                              child: const Icon(
+                                Icons.image_not_supported_outlined,
+                                color: AppColors.slate400,
+                              ),
+                            ),
                           ),
                         ),
                       ),

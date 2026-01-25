@@ -1,5 +1,6 @@
 import 'package:cashier/shared/components/apps/app_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
 import 'package:window_manager/window_manager.dart';
@@ -200,7 +201,7 @@ class _CashierProfile extends StatelessWidget {
               ),
             ],
             image: const DecorationImage(
-              image: NetworkImage(
+              image: CachedNetworkImageProvider(
                 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxuNkpgkeRkXzGmnLej0iJ_mI7M-iXO2U56ZVyNMPSpZT6FchmaGHxE2msBNZJ03FHyi97OzPGn5Dl4_GsVfFbGE-Oym0Vpt1bh_8RmmKBXFh0S9VoWSGWPplHe5djsyF1fYWQor7_xMasJf2QRzRia44eO2gl3D9d-qAmL480TFgzJmun3l05RDSSEV5nUsB3dbU6GouKD0sau1Jno6XU6TD8IDvInaamQrbzQZsGCTgcTaAlYQUfJ443D5glgFjzS80BeZ-3sto',
               ),
               fit: BoxFit.cover,

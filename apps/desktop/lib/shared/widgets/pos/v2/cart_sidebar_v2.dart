@@ -1,5 +1,6 @@
 import 'package:cashier/shared/components/quantity_state.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
 
@@ -159,7 +160,7 @@ class _CartItem extends StatelessWidget {
               color: AppColors.slate100,
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
-                image: NetworkImage(item['image'] as String),
+                image: CachedNetworkImageProvider(item['image'] as String),
                 fit: BoxFit.cover,
               ),
             ),

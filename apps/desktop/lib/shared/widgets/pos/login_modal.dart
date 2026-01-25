@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
@@ -192,7 +193,7 @@ class _LoginModalState extends State<LoginModal> {
                     decoration: BoxDecoration(
                       color: AppColors.emerald50,
                       image: const DecorationImage(
-                        image: NetworkImage(
+                        image: CachedNetworkImageProvider(
                           "https://lh3.googleusercontent.com/aida-public/AB6AXuC7WHRc-_2oyJCdX6Bf4ORjFEXEK9iuhRAy1IuIlHcrKvV9Is39zo_8xtKTz3VjQRiTfPcXD88YgpkTt46ql9Z4iMd2yTGl2NmalhAk_fLQddtyjyI5YhVJ2OhRkmp79WA5BT4cz-qLz4PZTHlQ5ngqaRltI41R39LYh3XXyI_-bgU0Yry2oJUHzIbZmApaoEOIZkbk-nkbzw4NTi3JQDzCAOTlme2cDQ_uIFNQVqPImbPgPUrGgLUKguoy5Pn77CwhmnloPBRFRT8",
                         ),
                         fit: BoxFit.cover,

@@ -147,6 +147,7 @@ class CategoriesContentArea extends StatelessWidget {
               ),
             ),
             columns: [
+              DataColumn(label: _buildHeader('NO.', headerStyle)),
               DataColumn(label: _buildHeader('CATEGORY NAME', headerStyle)),
               DataColumn(label: _buildHeader('DESCRIPTION', headerStyle)),
               DataColumn(label: _buildHeader('PRODUCT COUNT', headerStyle)),

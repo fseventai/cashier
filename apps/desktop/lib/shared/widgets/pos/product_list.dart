@@ -1,5 +1,6 @@
 import 'package:cashier/shared/components/quantity_state.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_text_styles.dart';
 
@@ -279,7 +280,7 @@ class _ProductListState extends State<ProductList> {
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: AppColors.surfaceBorder),
                           image: DecorationImage(
-                            image: NetworkImage(product.imageUrl),
+                            image: CachedNetworkImageProvider(product.imageUrl),
                             fit: BoxFit.cover,
                           ),
                         ),
