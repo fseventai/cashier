@@ -18,6 +18,7 @@ dependencies:
   dio: ^5.9.0
   dropdown_search: ^6.0.2
   esc_pos_utils_plus: ^2.0.4
+  flutter_dotenv: ^6.0.0
   google_fonts: ^7.1.0
   hugeicons: ^1.1.5
   intl: ^0.20.2

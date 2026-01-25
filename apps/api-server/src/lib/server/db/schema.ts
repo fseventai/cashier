@@ -12,6 +12,10 @@ export const user = pgTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  accessLevel: text("access_level"), // e.g., 'Admin', 'User', 'Staff'
+  isActive: boolean("is_active").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -267,6 +271,9 @@ export const stockMovements = pgTable("stock_movements", {
   type: text("type").notNull(), // 'in', 'out', 'adjustment'
   quantity: text("quantity").notNull(), // amount changed
   reason: text("reason"),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id),
   createdAt: timestamp("created_at").notNull(),
 });
 
@@ -275,8 +282,143 @@ export const stockMovementsRelations = relations(stockMovements, ({ one }) => ({
     fields: [stockMovements.productId],
     references: [products.id],
   }),
+  user: one(user, {
+    fields: [stockMovements.userId],
+    references: [user.id],
+  }),
 }));
 
 export const productsStockRelations = relations(products, ({ many }) => ({
   movements: many(stockMovements),
+}));
+
+// ============================================
+// Sales Tables
+// ============================================
+
+export const salesDocuments = pgTable("sales_documents", {
+  id: text("id").primaryKey(),
+  number: text("number").notNull().unique(), // e.g., INV-2025-001
+  documentType: text("document_type").notNull(), // 'Faktur Penjualan', 'Retur Penjualan'
+  refDocumentId: text("ref_document_id"), // for returns
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id),
+  customerId: text("customer_id").references(() => customers.id),
+  paymentType: text("payment_type"), // 'Cash', 'Credit Card', 'Bank Transfer'
+  pos: text("pos"),
+  date: timestamp("date").notNull(),
+  discount: text("discount").notNull().default("0"),
+  subtotal: text("subtotal").notNull().default("0"),
+  tax: text("tax").notNull().default("0"),
+  total: text("total").notNull().default("0"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+});
+
+export const salesItems = pgTable("sales_items", {
+  id: text("id").primaryKey(),
+  documentId: text("document_id")
+    .notNull()
+    .references(() => salesDocuments.id, { onDelete: "cascade" }),
+  productId: text("product_id").references(() => products.id),
+  code: text("code"),
+  name: text("name").notNull(),
+  unit: text("unit"),
+  quantity: text("quantity").notNull().default("0"),
+  priceExcl: text("price_excl").notNull().default("0"),
+  taxPercent: text("tax_percent").notNull().default("0"),
+  price: text("price").notNull().default("0"),
+  subtotal: text("subtotal").notNull().default("0"),
+  discount: text("discount").notNull().default("0"),
+  total: text("total").notNull().default("0"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+});
+
+export const salesDocumentsRelations = relations(
+  salesDocuments,
+  ({ one, many }) => ({
+    user: one(user, {
+      fields: [salesDocuments.userId],
+      references: [user.id],
+    }),
+    customer: one(customers, {
+      fields: [salesDocuments.customerId],
+      references: [customers.id],
+    }),
+    items: many(salesItems),
+    refDocument: one(salesDocuments, {
+      fields: [salesDocuments.refDocumentId],
+      references: [salesDocuments.id],
+      relationName: "ref_document",
+    }),
+  }),
+);
+
+export const salesItemsRelations = relations(salesItems, ({ one }) => ({
+  document: one(salesDocuments, {
+    fields: [salesItems.documentId],
+    references: [salesDocuments.id],
+  }),
+  product: one(products, {
+    fields: [salesItems.productId],
+    references: [products.id],
+  }),
+}));
+
+// ============================================
+// Cash Transaction Tables
+// ============================================
+
+export const cashTransactions = pgTable("cash_transactions", {
+  id: text("id").primaryKey(),
+  type: text("type").notNull(), // 'in', 'out'
+  amount: text("amount").notNull().default("0"),
+  description: text("description"),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+});
+
+export const cashTransactionsRelations = relations(
+  cashTransactions,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [cashTransactions.userId],
+      references: [user.id],
+    }),
+  }),
+);
+
+// ============================================
+// Shift Management Tables
+// ============================================
+
+export const shifts = pgTable("shifts", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id),
+  pos: text("pos"), // e.g., 'Utama', 'Cabang 1'
+  openedAt: timestamp("opened_at").notNull(),
+  closedAt: timestamp("closed_at"),
+  openingBalance: text("opening_balance").notNull().default("0"),
+  closingBalance: text("closing_balance"),
+  expectedBalance: text("expected_balance"),
+  discrepancy: text("discrepancy"),
+  openingNote: text("opening_note"),
+  closingNote: text("closing_note"),
+  status: text("status").notNull().default("open"), // 'open', 'closed'
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+});
+
+export const shiftsRelations = relations(shifts, ({ one }) => ({
+  user: one(user, {
+    fields: [shifts.userId],
+    references: [user.id],
+  }),
 }));
