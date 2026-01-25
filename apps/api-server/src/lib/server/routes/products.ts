@@ -1,30 +1,34 @@
 import { Elysia, t } from "elysia";
 import { db } from "../index";
 import {
-  products,
-  productGroups,
-  taxes,
-  storageLocations,
+  ProductService,
+  TaxService,
+  ProductGroupService,
+  StorageLocationService,
 } from "@cashier/database";
-import { eq } from "drizzle-orm";
+
+const productService = new ProductService(db);
+const taxService = new TaxService(db);
+const groupService = new ProductGroupService(db);
+const locationService = new StorageLocationService(db);
 
 export const productRoutes = new Elysia({ prefix: "/products" })
   // --- Product Groups ---
   .get("/groups", async () => {
-    return await db.select().from(productGroups);
+    return await groupService.getGroups();
   })
   .post(
     "/groups",
     async ({ body }) => {
       const id = crypto.randomUUID();
       const now = new Date();
-      await db.insert(productGroups).values({
+      const group = await groupService.createGroup({
+        ...body,
         id,
-        name: body.name,
         createdAt: now,
         updatedAt: now,
       });
-      return { id };
+      return group;
     },
     {
       body: t.Object({
@@ -35,46 +39,48 @@ export const productRoutes = new Elysia({ prefix: "/products" })
 
   // --- Taxes ---
   .get("/taxes", async () => {
-    return await db.select().from(taxes);
+    return await taxService.getTaxes();
   })
   .post(
     "/taxes",
     async ({ body }) => {
       const id = crypto.randomUUID();
       const now = new Date();
-      await db.insert(taxes).values({
+      const tax = await taxService.createTax({
+        ...body,
         id,
-        name: body.name,
-        rate: body.rate,
         createdAt: now,
         updatedAt: now,
       });
-      return { id };
+      return tax;
     },
     {
       body: t.Object({
         name: t.String(),
         rate: t.String(),
+        code: t.Optional(t.String()),
+        isFixed: t.Optional(t.Boolean()),
+        isEnabled: t.Optional(t.Boolean()),
       }),
     },
   )
 
   // --- Storage Locations ---
   .get("/locations", async () => {
-    return await db.select().from(storageLocations);
+    return await locationService.getLocations();
   })
   .post(
     "/locations",
     async ({ body }) => {
       const id = crypto.randomUUID();
       const now = new Date();
-      await db.insert(storageLocations).values({
+      const location = await locationService.createLocation({
+        ...body,
         id,
-        name: body.name,
         createdAt: now,
         updatedAt: now,
       });
-      return { id };
+      return location;
     },
     {
       body: t.Object({
@@ -85,32 +91,28 @@ export const productRoutes = new Elysia({ prefix: "/products" })
 
   // --- Products ---
   .get("/", async () => {
-    return await db.select().from(products);
+    return await productService.getProducts();
   })
   .get("/:id", async ({ params: { id }, set }) => {
-    const result = await db
-      .select()
-      .from(products)
-      .where(eq(products.id, id))
-      .limit(1);
-    if (result.length === 0) {
+    const product = await productService.getProductById(id);
+    if (!product) {
       set.status = 404;
       return "Product not found";
     }
-    return result[0];
+    return product;
   })
   .post(
     "/",
     async ({ body }) => {
       const id = crypto.randomUUID();
       const now = new Date();
-      await db.insert(products).values({
+      const product = await productService.createProduct({
         ...body,
         id,
         createdAt: now,
         updatedAt: now,
       });
-      return { id };
+      return product;
     },
     {
       body: t.Object({
@@ -146,21 +148,12 @@ export const productRoutes = new Elysia({ prefix: "/products" })
   .patch(
     "/:id",
     async ({ params: { id }, body, set }) => {
-      const now = new Date();
-      const result = await db
-        .update(products)
-        .set({
-          ...body,
-          updatedAt: now,
-        })
-        .where(eq(products.id, id))
-        .returning();
-
-      if (result.length === 0) {
+      const product = await productService.updateProduct(id, body);
+      if (!product) {
         set.status = 404;
         return "Product not found";
       }
-      return result[0];
+      return product;
     },
     {
       body: t.Object({
@@ -194,11 +187,8 @@ export const productRoutes = new Elysia({ prefix: "/products" })
     },
   )
   .delete("/:id", async ({ params: { id }, set }) => {
-    const result = await db
-      .delete(products)
-      .where(eq(products.id, id))
-      .returning();
-    if (result.length === 0) {
+    const product = await productService.deleteProduct(id);
+    if (!product) {
       set.status = 404;
       return "Product not found";
     }

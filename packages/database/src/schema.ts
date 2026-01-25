@@ -1,4 +1,5 @@
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -60,7 +61,10 @@ export const productGroups = pgTable("product_groups", {
 export const taxes = pgTable("taxes", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  code: text("code"),
   rate: text("rate").notNull(), // text to handle percentage precisely or numeric
+  isFixed: boolean("is_fixed").notNull().default(false),
+  isEnabled: boolean("is_enabled").notNull().default(true),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
 });
@@ -107,3 +111,106 @@ export const products = pgTable("products", {
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
 });
+
+export const productGroupsRelations = relations(productGroups, ({ many }) => ({
+  products: many(products),
+}));
+
+export const taxesRelations = relations(taxes, ({ many }) => ({
+  products: many(products),
+}));
+
+export const storageLocationsRelations = relations(
+  storageLocations,
+  ({ many }) => ({
+    products: many(products),
+  }),
+);
+
+export const productsRelations = relations(products, ({ one }) => ({
+  group: one(productGroups, {
+    fields: [products.groupId],
+    references: [productGroups.id],
+  }),
+  tax: one(taxes, {
+    fields: [products.taxId],
+    references: [taxes.id],
+  }),
+  storageLocation: one(storageLocations, {
+    fields: [products.storageLocationId],
+    references: [storageLocations.id],
+  }),
+}));
+
+export const customers = pgTable("customers", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  code: text("code"),
+  taxNumber: text("tax_number"),
+  streetName: text("street_name"),
+  buildingNumber: text("building_number"),
+  additionalStreetName: text("additional_street_name"),
+  plotIdentification: text("plot_identification"),
+  district: text("district"),
+  postalCode: text("postal_code"),
+  city: text("city"),
+  state: text("state"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+});
+
+export const companies = pgTable("companies", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  taxNumber: text("tax_number"),
+  streetName: text("street_name"),
+  buildingNumber: text("building_number"),
+  additionalStreetName: text("additional_street_name"),
+  plotIdentification: text("plot_identification"),
+  district: text("district"),
+  postalCode: text("postal_code"),
+  city: text("city"),
+  province: text("province"),
+  country: text("country"),
+  phone: text("phone"),
+  email: text("email"),
+  bankAccountNumber: text("bank_account_number"),
+  bankDetails: text("bank_details"),
+  logo: text("logo"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+});
+
+export const members = pgTable("members", {
+  id: text("id").primaryKey(),
+  fullName: text("full_name").notNull(),
+  identityNumber: text("identity_number"),
+  phoneNumber: text("phone_number"),
+  email: text("email"),
+  initialDeposit: text("initial_deposit").notNull().default("0"),
+  loyaltyLevel: text("loyalty_level").notNull().default("Bronze"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+});
+
+export const stockMovements = pgTable("stock_movements", {
+  id: text("id").primaryKey(),
+  productId: text("product_id")
+    .notNull()
+    .references(() => products.id),
+  type: text("type").notNull(), // 'in', 'out', 'adjustment'
+  quantity: text("quantity").notNull(), // amount changed
+  reason: text("reason"),
+  createdAt: timestamp("created_at").notNull(),
+});
+
+export const stockMovementsRelations = relations(stockMovements, ({ one }) => ({
+  product: one(products, {
+    fields: [stockMovements.productId],
+    references: [products.id],
+  }),
+}));
+
+export const productsStockRelations = relations(products, ({ many }) => ({
+  movements: many(stockMovements),
+}));
