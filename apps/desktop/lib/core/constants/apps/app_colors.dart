@@ -40,6 +40,7 @@ class AppColors {
   static const Color slate700 = Color(0xFF334155);
   static const Color slate800 = Color(0xFF1e293b);
   static const Color slate900 = Color(0xFF0f172a);
+  static const Color slate950 = Color(0xFF020617);
 
   // Text
   static const Color textMain = Color(0xFF1f2937); // gray-800

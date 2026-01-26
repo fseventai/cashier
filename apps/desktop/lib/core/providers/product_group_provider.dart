@@ -8,6 +8,19 @@ final productGroupListProvider =
       ProductGroupList.new,
     );
 
+final selectedProductGroupIdProvider =
+    NotifierProvider<SelectedProductGroupId, String?>(
+      SelectedProductGroupId.new,
+    );
+
+class SelectedProductGroupId extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  @override
+  set state(String? value) => super.state = value;
+}
+
 class ProductGroupList extends AsyncNotifier<List<ProductGroup>> {
   @override
   FutureOr<List<ProductGroup>> build() async {
