@@ -6,8 +6,21 @@ import 'package:hugeicons/hugeicons.dart';
 
 class CommandToolbar extends StatelessWidget {
   final VoidCallback? onNewProduct;
+  final VoidCallback? onEditProduct;
+  final VoidCallback? onDeleteProduct;
+  final VoidCallback? onNewGroup;
+  final VoidCallback? onEditGroup;
+  final VoidCallback? onDeleteGroup;
 
-  const CommandToolbar({super.key, this.onNewProduct});
+  const CommandToolbar({
+    super.key,
+    this.onNewProduct,
+    this.onEditProduct,
+    this.onDeleteProduct,
+    this.onNewGroup,
+    this.onEditGroup,
+    this.onDeleteGroup,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,19 +52,19 @@ class CommandToolbar extends StatelessWidget {
             CommandToolbarButton(
               icon: HugeIcons.strokeRoundedFolderAdd,
               label: 'New group',
-              onTap: () {},
+              onTap: onNewGroup ?? () {},
               isDark: isDark,
             ),
             CommandToolbarButton(
               icon: HugeIcons.strokeRoundedFolderLinks,
               label: 'Edit group',
-              onTap: () {},
+              onTap: onEditGroup ?? () {},
               isDark: isDark,
             ),
             CommandToolbarButton(
               icon: HugeIcons.strokeRoundedFolderRemove,
               label: 'Delete group',
-              onTap: () {},
+              onTap: onDeleteGroup ?? () {},
               isDark: isDark,
               hoverColor: Colors.red,
             ),
@@ -67,13 +80,13 @@ class CommandToolbar extends StatelessWidget {
             CommandToolbarButton(
               icon: HugeIcons.strokeRoundedPencilEdit02,
               label: 'Edit product',
-              onTap: () {},
+              onTap: onEditProduct ?? () {},
               isDark: isDark,
             ),
             CommandToolbarButton(
               icon: HugeIcons.strokeRoundedDelete02,
               label: 'Delete product',
-              onTap: () {},
+              onTap: onDeleteProduct ?? () {},
               isDark: isDark,
               hoverColor: Colors.red,
             ),

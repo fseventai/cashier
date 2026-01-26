@@ -1,10 +1,18 @@
 import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:cashier/core/constants/apps/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  const env = String.fromEnvironment('ENV', defaultValue: 'development');
+  await dotenv.load(
+    fileName: env == 'production' ? ".env.production" : ".env.development",
+  );
+
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
@@ -22,7 +30,8 @@ void main() async {
     await windowManager.maximize();
   });
 
-  runApp(const CoopPosApp());
+  await initializeDateFormatting('id_ID', null);
+  runApp(const ProviderScope(child: CoopPosApp()));
 }
 
 class CoopPosApp extends StatelessWidget {

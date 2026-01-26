@@ -71,11 +71,23 @@ class DetailsTab extends ConsumerWidget {
         ),
         const SizedBox(height: 20),
         // Dropdown needs similar update to accept onChanged and value
-        const ProductDropdown(
+        ProductDropdown<String>(
           label: 'Group',
           value: 'Products', // Should bind to product.groupId and map to name
-          items: ['Products'],
+          items: [
+            DropdownMenuItem(
+              value: 'Products',
+              child: Text(
+                'Products',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.slate800,
+                ),
+              ),
+            ),
+          ],
+          onChanged: (v) {},
         ),
+
         const SizedBox(height: 24),
         ProductSwitch(
           label: 'Active',

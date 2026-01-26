@@ -14,6 +14,7 @@ import 'package:cashier/shared/widgets/management/products/command_toolbar.dart'
 import 'package:cashier/shared/widgets/management/products/product_group_list.dart';
 import 'package:cashier/shared/widgets/management/products/product_content_area.dart';
 import 'package:cashier/shared/widgets/management/products/product_drawer.dart';
+import 'package:cashier/shared/widgets/management/products/product_group_drawer/product_group_drawer.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_toolbar.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_content_area.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_drawer.dart';
@@ -25,17 +26,33 @@ import 'package:cashier/shared/widgets/management/users/users_security_content.d
 import 'package:cashier/shared/widgets/management/users/user_drawer.dart';
 import 'package:cashier/shared/widgets/management/reporting/reporting_content.dart';
 
-class ManagementScreen extends StatefulWidget {
+import 'package:cashier/core/providers/product_group_provider.dart'
+    hide ProductGroupList;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class ManagementScreen extends ConsumerStatefulWidget {
   const ManagementScreen({super.key});
 
   @override
-  State<ManagementScreen> createState() => _ManagementScreenState();
+  ConsumerState<ManagementScreen> createState() => _ManagementScreenState();
 }
 
-class _ManagementScreenState extends State<ManagementScreen> {
+class _ManagementScreenState extends ConsumerState<ManagementScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   String _activeRoute = 'dashboard';
+  String? _activeDrawerPath; // 'product', 'group'
+
+  void _openProductDrawer() {
+    setState(() => _activeDrawerPath = 'product');
+    _scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  void _openGroupDrawer() {
+    ref.read(productGroupFormProvider.notifier).reset();
+    setState(() => _activeDrawerPath = 'group');
+    _scaffoldKey.currentState?.openEndDrawer();
+  }
 
   final Map<String, String> routeLabels = {
     'dashboard': 'Dashboard',
@@ -74,12 +91,22 @@ class _ManagementScreenState extends State<ManagementScreen> {
 
       case 'products':
         return ManagementPageConfig(
-          toolbar: CommandToolbar(onNewProduct: _openDrawer),
-          drawer: const ProductDrawer(),
+          toolbar: CommandToolbar(
+            onNewProduct: _openProductDrawer,
+            onNewGroup: _openGroupDrawer,
+          ),
+          drawer: _activeDrawerPath == 'group'
+              ? const ProductGroupDrawer()
+              : const ProductDrawer(),
           content: Row(
             children: [
               const ProductGroupList(),
-              Expanded(child: ProductContentArea(onNewProduct: _openDrawer)),
+              Expanded(
+                child: ProductContentArea(
+                  onNewProduct: _openProductDrawer,
+                  onNewGroup: _openGroupDrawer,
+                ),
+              ),
             ],
           ),
         );

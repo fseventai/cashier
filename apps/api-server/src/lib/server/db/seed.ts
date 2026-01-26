@@ -60,14 +60,27 @@ async function seed() {
     console.log(`👤 Created ${usersData.length} users`);
 
     // 3. Product Groups
+    const rootGroup = {
+      id: faker.string.uuid(),
+      name: "Products (Root)",
+      description: "Root group for products",
+      isActive: true,
+      parentId: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
     const groupsData = Array.from({ length: 5 }).map(() => ({
       id: faker.string.uuid(),
       name: faker.commerce.department(),
+      description: faker.lorem.sentence(),
+      isActive: true,
+      parentId: rootGroup.id,
       createdAt: new Date(),
       updatedAt: new Date(),
     }));
 
-    await db.insert(schema.productGroups).values(groupsData);
+    await db.insert(schema.productGroups).values([rootGroup, ...groupsData]);
     console.log(`📦 Created ${groupsData.length} product groups`);
 
     // 4. Taxes
@@ -214,9 +227,9 @@ async function seed() {
 
     // 11. Sales Documents & Items
     console.log(
-      "📑 Creating sales documents and items (200 records for dashboard)...",
+      "📑 Creating sales documents and items (50 records for dashboard)...",
     );
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
       const u = faker.helpers.arrayElement(usersData);
       const c = faker.helpers.arrayElement(customersData);
       const docId = faker.string.uuid();

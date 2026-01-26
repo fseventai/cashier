@@ -5,8 +5,9 @@ import 'package:hugeicons/hugeicons.dart';
 
 class ProductContentArea extends StatelessWidget {
   final VoidCallback? onNewProduct;
+  final VoidCallback? onNewGroup;
 
-  const ProductContentArea({super.key, this.onNewProduct});
+  const ProductContentArea({super.key, this.onNewProduct, this.onNewGroup});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +72,11 @@ class ProductContentArea extends StatelessWidget {
                           ),
                         ),
                       ),
-                      _buildLinkText('new product group', isDark),
+                      _buildLinkText(
+                        'new product group',
+                        isDark,
+                        onTap: onNewGroup,
+                      ),
                     ],
                   ),
                 ],

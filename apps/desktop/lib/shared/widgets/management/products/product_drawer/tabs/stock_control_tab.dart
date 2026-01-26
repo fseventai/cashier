@@ -19,26 +19,42 @@ class StockControlTab extends StatelessWidget {
           onChanged: (v) {},
         ),
         const SizedBox(height: 12),
-        const Row(
+        Row(
           children: [
-            Expanded(
+            const Expanded(
               child: ProductTextField(
                 label: 'Stock quantity',
                 initialValue: '0',
               ),
             ),
-            SizedBox(width: 24),
+            const SizedBox(width: 24),
             Expanded(
-              child: ProductDropdown(
+              child: ProductDropdown<String>(
                 label: 'Storage location',
                 value: 'Select location',
-                items: [
-                  'Select location',
-                  'Main Warehouse',
-                  'Secondary Storage',
-                  'Display Shelf A',
-                  'Back Office',
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Select location',
+                    child: Text('Select location'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Main Warehouse',
+                    child: Text('Main Warehouse'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Secondary Storage',
+                    child: Text('Secondary Storage'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Display Shelf A',
+                    child: Text('Display Shelf A'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Back Office',
+                    child: Text('Back Office'),
+                  ),
                 ],
+                onChanged: (v) {},
               ),
             ),
           ],

@@ -7,12 +7,19 @@ export class ProductGroupService {
   constructor(private db: PostgresJsDatabase<typeof schema>) {}
 
   async getGroups() {
-    return await this.db.query.productGroups.findMany();
+    return await this.db.query.productGroups.findMany({
+      with: {
+        parent: true,
+      },
+    });
   }
 
   async getGroupById(id: string) {
     return await this.db.query.productGroups.findFirst({
       where: eq(productGroups.id, id),
+      with: {
+        parent: true,
+      },
     });
   }
 

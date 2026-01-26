@@ -19,18 +19,32 @@ class PriceAndTaxTab extends StatelessWidget {
         const SizedBox(height: 12),
         Row(
           children: [
-            const Expanded(
-              child: ProductDropdown(
+            Expanded(
+              child: ProductDropdown<String>(
                 label: '',
                 value: 'Add tax to product',
-                items: [
-                  'Add tax to product',
-                  'Standard VAT (10%)',
-                  'Zero Rate (0%)',
-                  'Reduced Rate (5%)',
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Add tax to product',
+                    child: Text('Add tax to product'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Standard VAT (10%)',
+                    child: Text('Standard VAT (10%)'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Zero Rate (0%)',
+                    child: Text('Zero Rate (0%)'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Reduced Rate (5%)',
+                    child: Text('Reduced Rate (5%)'),
+                  ),
                 ],
+                onChanged: (v) {},
               ),
             ),
+
             const SizedBox(width: 8),
             IconButton(
               onPressed: () {},

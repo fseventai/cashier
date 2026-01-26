@@ -9,6 +9,10 @@ abstract class IProductRepository {
   Future<void> deleteProduct(String id);
 
   Future<List<ProductGroup>> getGroups();
+  Future<ProductGroup> createGroup(ProductGroup group);
+  Future<void> updateGroup(String id, ProductGroup group);
+  Future<void> deleteGroup(String id);
+
   Future<List<Tax>> getTaxes();
   Future<List<StorageLocation>> getLocations();
 }
@@ -55,6 +59,25 @@ class ProductRepository implements IProductRepository {
     return (response.data as List)
         .map((e) => ProductGroup.fromJson(e))
         .toList();
+  }
+
+  @override
+  Future<ProductGroup> createGroup(ProductGroup group) async {
+    final response = await _apiService.dio.post(
+      '/products/groups',
+      data: group.toJson(),
+    );
+    return ProductGroup.fromJson(response.data);
+  }
+
+  @override
+  Future<void> updateGroup(String id, ProductGroup group) async {
+    await _apiService.dio.patch('/products/groups/$id', data: group.toJson());
+  }
+
+  @override
+  Future<void> deleteGroup(String id) async {
+    await _apiService.dio.delete('/products/groups/$id');
   }
 
   @override

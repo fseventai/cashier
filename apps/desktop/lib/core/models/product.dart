@@ -202,19 +202,68 @@ class Product {
 class ProductGroup {
   final String id;
   final String name;
+  final String? parentId;
+  final String? description;
+  final bool isActive;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
-  const ProductGroup({required this.id, required this.name});
+  const ProductGroup({
+    required this.id,
+    required this.name,
+    this.parentId,
+    this.description,
+    this.isActive = true,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-  ProductGroup copyWith({String? id, String? name}) {
-    return ProductGroup(id: id ?? this.id, name: name ?? this.name);
+  ProductGroup copyWith({
+    String? id,
+    String? name,
+    String? parentId,
+    String? description,
+    bool? isActive,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return ProductGroup(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      parentId: parentId ?? this.parentId,
+      description: description ?? this.description,
+      isActive: isActive ?? this.isActive,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
   }
 
   factory ProductGroup.fromJson(Map<String, dynamic> json) {
-    return ProductGroup(id: json['id'] as String, name: json['name'] as String);
+    return ProductGroup(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      parentId: json['parentId'] as String?,
+      description: json['description'] as String?,
+      isActive: json['isActive'] as bool? ?? true,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+    );
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name};
+    return {
+      'id': id,
+      'name': name,
+      'parentId': parentId,
+      'description': description,
+      'isActive': isActive,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+    };
   }
 }
 

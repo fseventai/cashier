@@ -108,9 +108,23 @@ export const accountRelations = relations(account, ({ one }) => ({
 export const productGroups = pgTable("product_groups", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  parentId: text("parent_id"),
+  description: text("description"),
+  isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
 });
+
+export const productGroupsParentRelations = relations(
+  productGroups,
+  ({ one }) => ({
+    parent: one(productGroups, {
+      fields: [productGroups.parentId],
+      references: [productGroups.id],
+      relationName: "parent_child",
+    }),
+  }),
+);
 
 export const taxes = pgTable("taxes", {
   id: text("id").primaryKey(),
