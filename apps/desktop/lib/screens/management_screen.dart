@@ -15,6 +15,7 @@ import 'package:cashier/shared/widgets/management/products/product_group_list.da
 import 'package:cashier/shared/widgets/management/products/product_content_area.dart';
 import 'package:cashier/shared/widgets/management/products/product_drawer.dart';
 import 'package:cashier/shared/widgets/management/products/product_group_drawer/product_group_drawer.dart';
+import 'package:cashier/shared/components/dialogs/delete_confirmation_dialog.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_toolbar.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_content_area.dart';
 import 'package:cashier/shared/widgets/management/customers/customer_drawer.dart';
@@ -29,7 +30,10 @@ import 'package:cashier/shared/widgets/management/reporting/reporting_content.da
 import 'package:cashier/core/providers/product_group_provider.dart'
     hide ProductGroupList;
 import 'package:cashier/core/providers/product_provider.dart';
+import 'package:cashier/core/models/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toastification/toastification.dart';
+import 'package:dio/dio.dart';
 
 class ManagementScreen extends ConsumerStatefulWidget {
   const ManagementScreen({super.key});
@@ -52,14 +56,161 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
   }
 
   void _openProductDrawer() {
+    ref
+        .read(productFormProvider.notifier)
+        .updateProduct(const Product(id: '', name: ''));
     setState(() => _activeDrawerPath = 'product');
     _scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  void _onEditProduct() {
+    final selectedId = ref.read(selectedProductIdProvider);
+    if (selectedId == null) return;
+
+    final products = ref.read(productListProvider).value ?? [];
+    final product = products.firstWhere(
+      (p) => p.id == selectedId,
+      orElse: () => const Product(id: '', name: ''),
+    );
+
+    if (product.id.isEmpty) return;
+
+    ref.read(productFormProvider.notifier).updateProduct(product);
+    setState(() => _activeDrawerPath = 'product');
+    _scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  Future<void> _onDeleteProduct() async {
+    final selectedId = ref.read(selectedProductIdProvider);
+    if (selectedId == null) return;
+
+    final products = ref.read(productListProvider).value ?? [];
+    final product = products.firstWhere(
+      (p) => p.id == selectedId,
+      orElse: () => const Product(id: '', name: ''),
+    );
+
+    if (product.id.isEmpty) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => DeleteConfirmationDialog(
+        title: 'Hapus Produk?',
+        message:
+            'Apakah Anda yakin ingin menghapus produk "${product.name}"? Tindakan ini tidak dapat dibatalkan.',
+        onConfirm: () => Navigator.pop(context, true),
+        onCancel: () => Navigator.pop(context, false),
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        await ref.read(productListProvider.notifier).deleteProduct(selectedId);
+        ref.read(selectedProductIdProvider.notifier).state = null;
+        if (mounted) {
+          toastification.show(
+            context: context,
+            type: ToastificationType.success,
+            style: ToastificationStyle.flatColored,
+            title: const Text('Berhasil'),
+            description: Text('Produk "${product.name}" berhasil dihapus'),
+            autoCloseDuration: const Duration(seconds: 3),
+          );
+        }
+      } catch (e) {
+        String message = 'Gagal menghapus produk';
+        if (e is DioException && e.response?.data is Map) {
+          message = e.response?.data['message'] ?? message;
+        }
+        if (mounted) {
+          toastification.show(
+            context: context,
+            type: ToastificationType.error,
+            style: ToastificationStyle.flatColored,
+            title: const Text('Gagal'),
+            description: Text(message),
+            autoCloseDuration: const Duration(seconds: 5),
+          );
+        }
+      }
+    }
   }
 
   void _openGroupDrawer() {
     ref.read(productGroupFormProvider.notifier).reset();
     setState(() => _activeDrawerPath = 'group');
     _scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  Future<void> _onDeleteGroup() async {
+    final selectedId = ref.read(selectedProductGroupIdProvider);
+    if (selectedId == null) {
+      toastification.show(
+        context: context,
+        type: ToastificationType.warning,
+        style: ToastificationStyle.flatColored,
+        title: const Text('Pilih grup'),
+        description: const Text(
+          'Pilih grup yang ingin dihapus terlebih dahulu',
+        ),
+        autoCloseDuration: const Duration(seconds: 3),
+      );
+      return;
+    }
+
+    // Find the group name for the dialog
+    final groups = ref.read(productGroupListProvider).value ?? [];
+    ProductGroup? selectedGroup;
+    try {
+      selectedGroup = groups.firstWhere((g) => g.id == selectedId);
+    } catch (_) {
+      return;
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => DeleteConfirmationDialog(
+        title: 'Hapus Grup?',
+        message:
+            'Apakah Anda yakin ingin menghapus grup "${selectedGroup!.name}"? Tindakan ini tidak dapat dibatalkan.',
+        onConfirm: () => Navigator.pop(context, true),
+        onCancel: () => Navigator.pop(context, false),
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        await ref
+            .read(productGroupListProvider.notifier)
+            .deleteGroup(selectedId);
+        ref.read(selectedProductGroupIdProvider.notifier).state = null;
+        if (mounted) {
+          toastification.show(
+            context: context,
+            type: ToastificationType.success,
+            style: ToastificationStyle.flatColored,
+            title: const Text('Berhasil'),
+            description: Text('Grup "${selectedGroup.name}" berhasil dihapus'),
+            autoCloseDuration: const Duration(seconds: 3),
+          );
+        }
+      } catch (e) {
+        String message = 'Gagal menghapus grup';
+        if (e is DioException && e.response?.data is Map) {
+          message = e.response?.data['message'] ?? message;
+        }
+        if (mounted) {
+          toastification.show(
+            context: context,
+            type: ToastificationType.error,
+            style: ToastificationStyle.flatColored,
+            title: const Text('Gagal'),
+            description: Text(message),
+            autoCloseDuration: const Duration(seconds: 5),
+          );
+        }
+      }
+    }
   }
 
   final Map<String, String> routeLabels = {
@@ -100,11 +251,14 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
       case 'products':
         return ManagementPageConfig(
           toolbar: CommandToolbar(
+            onDeleteGroup: _onDeleteGroup,
             onRefresh: () {
               ref.invalidate(productListProvider);
               ref.invalidate(productGroupListProvider);
             },
             onNewProduct: _openProductDrawer,
+            onEditProduct: _onEditProduct,
+            onDeleteProduct: _onDeleteProduct,
             onNewGroup: _openGroupDrawer,
           ),
           drawer: _activeDrawerPath == 'group'

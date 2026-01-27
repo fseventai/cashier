@@ -48,37 +48,52 @@ class _CommandToolbarButtonState extends State<CommandToolbarButton> {
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
+      cursor: widget.isEnabled
+          ? SystemMouseCursors.click
+          : SystemMouseCursors.basic,
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: widget.isEnabled ? widget.onTap : null,
         child: Container(
           width: widget.width,
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: _isHovered
-                ? (widget.isDark
-                      ? AppColors.slate700.withValues(alpha: 0.5)
-                      : AppColors.slate100)
-                : Colors.transparent,
+            color: !widget.isEnabled
+                ? (widget.isDark ? AppColors.slate700 : AppColors.slate200)
+                      .withValues(alpha: 0.5)
+                : (_isHovered
+                      ? (widget.isDark
+                            ? AppColors.slate700.withValues(alpha: 0.5)
+                            : AppColors.slate100)
+                      : Colors.transparent),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              HugeIcon(icon: widget.icon, size: 20, color: effectiveIconColor),
-              const SizedBox(height: 4),
-              Text(
-                widget.label,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.bodyXSmall.copyWith(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  color: widget.isDark
-                      ? AppColors.slate400
-                      : AppColors.slate600,
+              Opacity(
+                opacity: widget.isEnabled ? 1.0 : 0.4,
+                child: HugeIcon(
+                  icon: widget.icon,
+                  size: 20,
+                  color: effectiveIconColor,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Opacity(
+                opacity: widget.isEnabled ? 1.0 : 0.4,
+                child: Text(
+                  widget.label,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.bodyXSmall.copyWith(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: widget.isDark
+                        ? AppColors.slate400
+                        : AppColors.slate600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

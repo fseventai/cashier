@@ -17,6 +17,18 @@ final productListProvider = AsyncNotifierProvider<ProductList, List<Product>>(
   ProductList.new,
 );
 
+final selectedProductIdProvider = NotifierProvider<SelectedProductId, String?>(
+  SelectedProductId.new,
+);
+
+class SelectedProductId extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  @override
+  set state(String? value) => super.state = value;
+}
+
 class ProductList extends AsyncNotifier<List<Product>> {
   @override
   FutureOr<List<Product>> build() async {
@@ -39,10 +51,14 @@ class ProductList extends AsyncNotifier<List<Product>> {
 
   Future<void> deleteProduct(String id) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
+    try {
       await ref.read(productRepositoryProvider).deleteProduct(id);
-      return ref.read(productRepositoryProvider).getProducts();
-    });
+      final products = await ref.read(productRepositoryProvider).getProducts();
+      state = AsyncValue.data(products);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    }
   }
 }
 

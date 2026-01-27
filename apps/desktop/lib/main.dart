@@ -3,6 +3,7 @@ import 'package:cashier/core/constants/apps/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toastification/toastification.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -39,16 +40,18 @@ class CoopPosApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Coop POS',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.emerald500),
-        useMaterial3: true,
-        scaffoldBackgroundColor: AppColors.surfaceAlt,
+    return ToastificationWrapper(
+      child: MaterialApp(
+        title: 'Coop POS',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.emerald500),
+          useMaterial3: true,
+          scaffoldBackgroundColor: AppColors.surfaceAlt,
+        ),
+        initialRoute: AppRoutes.pos,
+        routes: AppRoutes.routeMap,
       ),
-      initialRoute: AppRoutes.pos,
-      routes: AppRoutes.routeMap,
     );
   }
 }

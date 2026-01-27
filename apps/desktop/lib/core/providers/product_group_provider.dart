@@ -41,10 +41,14 @@ class ProductGroupList extends AsyncNotifier<List<ProductGroup>> {
 
   Future<void> deleteGroup(String id) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
+    try {
       await ref.read(productRepositoryProvider).deleteGroup(id);
-      return ref.read(productRepositoryProvider).getGroups();
-    });
+      final groups = await ref.read(productRepositoryProvider).getGroups();
+      state = AsyncValue.data(groups);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    }
   }
 }
 

@@ -1,10 +1,13 @@
+import 'package:cashier/core/providers/product_group_provider.dart';
+import 'package:cashier/core/providers/product_provider.dart';
 import 'package:cashier/shared/components/apps/command_toolbar_button.dart';
 import 'package:cashier/shared/components/apps/custom_vertical_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:cashier/core/constants/apps/app_colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-class CommandToolbar extends StatelessWidget {
+class CommandToolbar extends ConsumerWidget {
   final VoidCallback? onRefresh;
   final VoidCallback? onNewProduct;
   final VoidCallback? onEditProduct;
@@ -25,8 +28,10 @@ class CommandToolbar extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final selectedProductId = ref.watch(selectedProductIdProvider);
+    final hasProductSelected = selectedProductId != null;
 
     return Container(
       height: 80,
@@ -62,6 +67,7 @@ class CommandToolbar extends StatelessWidget {
               label: 'Edit group',
               onTap: onEditGroup ?? () {},
               isDark: isDark,
+              isEnabled: ref.watch(selectedProductGroupIdProvider) != null,
             ),
             CommandToolbarButton(
               icon: HugeIcons.strokeRoundedFolderRemove,
@@ -69,6 +75,7 @@ class CommandToolbar extends StatelessWidget {
               onTap: onDeleteGroup ?? () {},
               isDark: isDark,
               hoverColor: Colors.red,
+              isEnabled: ref.watch(selectedProductGroupIdProvider) != null,
             ),
             CustomVerticalDivider(isDark: isDark),
             CommandToolbarButton(
@@ -84,6 +91,7 @@ class CommandToolbar extends StatelessWidget {
               label: 'Edit product',
               onTap: onEditProduct ?? () {},
               isDark: isDark,
+              isEnabled: hasProductSelected,
             ),
             CommandToolbarButton(
               icon: HugeIcons.strokeRoundedDelete02,
@@ -91,6 +99,7 @@ class CommandToolbar extends StatelessWidget {
               onTap: onDeleteProduct ?? () {},
               isDark: isDark,
               hoverColor: Colors.red,
+              isEnabled: hasProductSelected,
             ),
             CustomVerticalDivider(isDark: isDark),
             CommandToolbarButton(

@@ -9,6 +9,7 @@ import 'package:cashier/shared/widgets/management/products/product_drawer/tabs/c
 import 'package:cashier/shared/widgets/management/products/product_drawer/tabs/image_and_color_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toastification/toastification.dart';
 
 class ProductDrawer extends ConsumerStatefulWidget {
   const ProductDrawer({super.key});
@@ -56,6 +57,16 @@ class _ProductDrawerState extends ConsumerState<ProductDrawer> {
               final product = ref.read(productFormProvider);
               await ref.read(productListProvider.notifier).saveProduct(product);
               if (context.mounted) {
+                toastification.show(
+                  context: context,
+                  type: ToastificationType.success,
+                  style: ToastificationStyle.flatColored,
+                  title: const Text('Berhasil'),
+                  description: Text(
+                    'Produk "${product.name}" berhasil disimpan',
+                  ),
+                  autoCloseDuration: const Duration(seconds: 3),
+                );
                 Navigator.of(context).pop();
               }
             },

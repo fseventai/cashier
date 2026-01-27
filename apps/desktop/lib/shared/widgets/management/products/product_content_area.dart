@@ -208,27 +208,43 @@ class _ProductContentAreaState extends ConsumerState<ProductContentArea> {
   }
 
   Widget _buildProductRow(Product product, bool isDark, bool isOdd) {
+    final selectedProductId = ref.watch(selectedProductIdProvider);
+    final isSelected = selectedProductId == product.id;
+
     return Container(
       height: 56,
       decoration: BoxDecoration(
-        color: isOdd
+        color: isSelected
             ? (isDark
-                  ? AppColors.slate900.withValues(alpha: 0.3)
-                  : AppColors.slate50.withValues(alpha: 0.5))
-            : Colors.transparent,
+                  ? AppColors.emerald900.withValues(alpha: 0.2)
+                  : AppColors.emerald50)
+            : (isOdd
+                  ? (isDark
+                        ? AppColors.slate900.withValues(alpha: 0.3)
+                        : AppColors.slate50.withValues(alpha: 0.5))
+                  : Colors.transparent),
         border: Border(
+          left: isSelected
+              ? const BorderSide(color: AppColors.emerald600, width: 4)
+              : BorderSide.none,
           bottom: BorderSide(
-            color: isDark ? AppColors.slate900 : AppColors.slate100,
+            color: isSelected
+                ? AppColors.emerald600.withValues(alpha: 0.2)
+                : (isDark ? AppColors.slate900 : AppColors.slate100),
           ),
         ),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
-          hoverColor: isDark
-              ? AppColors.slate800.withValues(alpha: 0.5)
-              : AppColors.emerald50.withValues(alpha: 0.3),
+          onTap: () {
+            ref.read(selectedProductIdProvider.notifier).state = product.id;
+          },
+          hoverColor: isSelected
+              ? Colors.transparent
+              : (isDark
+                    ? AppColors.slate800.withValues(alpha: 0.5)
+                    : AppColors.emerald50.withValues(alpha: 0.3)),
           child: Row(
             children: [
               // Image
