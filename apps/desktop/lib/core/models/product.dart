@@ -26,6 +26,7 @@ class Product {
   final String? internalComments;
   final String? receiptNotes;
   final String? supplierNotes;
+  final ProductGroup? group;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -57,6 +58,7 @@ class Product {
     this.internalComments,
     this.receiptNotes,
     this.supplierNotes,
+    this.group,
     this.createdAt,
     this.updatedAt,
   });
@@ -121,6 +123,7 @@ class Product {
       internalComments: internalComments ?? this.internalComments,
       receiptNotes: receiptNotes ?? this.receiptNotes,
       supplierNotes: supplierNotes ?? this.supplierNotes,
+      group: group ?? group,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -155,6 +158,9 @@ class Product {
       internalComments: json['internalComments'] as String?,
       receiptNotes: json['receiptNotes'] as String?,
       supplierNotes: json['supplierNotes'] as String?,
+      group: json['group'] == null
+          ? null
+          : ProductGroup.fromJson(json['group'] as Map<String, dynamic>),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -193,6 +199,7 @@ class Product {
       'internalComments': internalComments,
       'receiptNotes': receiptNotes,
       'supplierNotes': supplierNotes,
+      'group': group?.toJson(),
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
     };

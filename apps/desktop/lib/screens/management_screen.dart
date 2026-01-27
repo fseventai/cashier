@@ -28,6 +28,7 @@ import 'package:cashier/shared/widgets/management/reporting/reporting_content.da
 
 import 'package:cashier/core/providers/product_group_provider.dart'
     hide ProductGroupList;
+import 'package:cashier/core/providers/product_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ManagementScreen extends ConsumerStatefulWidget {
@@ -42,6 +43,13 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
 
   String _activeRoute = 'dashboard';
   String? _activeDrawerPath; // 'product', 'group'
+  bool _isSidebarCollapsed = false;
+
+  void _onToggleSidebar() {
+    setState(() {
+      _isSidebarCollapsed = !_isSidebarCollapsed;
+    });
+  }
 
   void _openProductDrawer() {
     setState(() => _activeDrawerPath = 'product');
@@ -92,6 +100,10 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
       case 'products':
         return ManagementPageConfig(
           toolbar: CommandToolbar(
+            onRefresh: () {
+              ref.invalidate(productListProvider);
+              ref.invalidate(productGroupListProvider);
+            },
             onNewProduct: _openProductDrawer,
             onNewGroup: _openGroupDrawer,
           ),
@@ -100,8 +112,9 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
               : const ProductDrawer(),
           content: Row(
             children: [
-              const ProductGroupList(),
+              Expanded(flex: 2, child: const ProductGroupList()),
               Expanded(
+                flex: 6,
                 child: ProductContentArea(
                   onNewProduct: _openProductDrawer,
                   onNewGroup: _openGroupDrawer,
@@ -175,9 +188,16 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
             return Row(
               children: [
                 // Left Sidebar
-                ManagementSidebar(
-                  activeRoute: _activeRoute,
-                  onRouteSelected: _onRouteSelected,
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  width: _isSidebarCollapsed ? 80 : 260,
+                  child: ManagementSidebar(
+                    activeRoute: _activeRoute,
+                    onRouteSelected: _onRouteSelected,
+                    isCollapsed: _isSidebarCollapsed,
+                    onToggle: _onToggleSidebar,
+                  ),
                 ),
 
                 // Main Content

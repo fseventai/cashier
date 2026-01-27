@@ -9,6 +9,7 @@ class PosNavigationButton extends StatefulWidget {
   final bool isActive;
   final VoidCallback onTap;
   final bool isDark;
+  final bool isCollapsed;
 
   const PosNavigationButton({
     super.key,
@@ -17,6 +18,7 @@ class PosNavigationButton extends StatefulWidget {
     required this.isActive,
     required this.onTap,
     required this.isDark,
+    this.isCollapsed = false,
   });
 
   @override
@@ -34,43 +36,75 @@ class _PosNavigationButtonState extends State<PosNavigationButton> {
               ? AppColors.emerald600
               : (widget.isDark ? AppColors.slate400 : AppColors.slate600));
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 12),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          decoration: BoxDecoration(
-            color: widget.isActive
-                ? (widget.isDark
-                      ? AppColors.emerald900.withValues(alpha: 0.2)
-                      : AppColors.emerald100)
-                : (_isHovered
-                      ? (widget.isDark
-                            ? AppColors.slate700.withValues(alpha: 0.5)
-                            : AppColors.slate100)
-                      : Colors.transparent),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            children: [
-              HugeIcon(icon: widget.icon, size: 20, color: contentColor),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  widget.label,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    fontWeight: widget.isActive
-                        ? FontWeight.w600
-                        : FontWeight.w500,
-                    color: contentColor,
+    return Tooltip(
+      message: widget.isCollapsed ? widget.label : '',
+      waitDuration: const Duration(milliseconds: 500),
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _isHovered = true),
+        onExit: (_) => setState(() => _isHovered = false),
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: widget.onTap,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: widget.isActive
+                  ? (widget.isDark
+                        ? AppColors.emerald900.withValues(alpha: 0.2)
+                        : AppColors.emerald100)
+                  : (_isHovered
+                        ? (widget.isDark
+                              ? AppColors.slate700.withValues(alpha: 0.5)
+                              : AppColors.slate100)
+                        : Colors.transparent),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
+              child: Row(
+                mainAxisAlignment: widget.isCollapsed
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.start,
+                children: [
+                  HugeIcon(icon: widget.icon, size: 20, color: contentColor),
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    child: SizedBox(
+                      width: widget.isCollapsed
+                          ? 0
+                          : 180, // Target width for the text area
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: AnimatedOpacity(
+                          duration: const Duration(milliseconds: 200),
+                          opacity: widget.isCollapsed ? 0 : 1,
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 12),
+                              Text(
+                                widget.label,
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  fontWeight: widget.isActive
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
+                                  color: contentColor,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.clip,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

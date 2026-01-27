@@ -5,6 +5,7 @@ import 'package:cashier/core/constants/apps/app_colors.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class CommandToolbar extends StatelessWidget {
+  final VoidCallback? onRefresh;
   final VoidCallback? onNewProduct;
   final VoidCallback? onEditProduct;
   final VoidCallback? onDeleteProduct;
@@ -14,6 +15,7 @@ class CommandToolbar extends StatelessWidget {
 
   const CommandToolbar({
     super.key,
+    this.onRefresh,
     this.onNewProduct,
     this.onEditProduct,
     this.onDeleteProduct,
@@ -45,7 +47,7 @@ class CommandToolbar extends StatelessWidget {
             CommandToolbarButton(
               icon: HugeIcons.strokeRoundedRefresh,
               label: 'Segarkan',
-              onTap: () {},
+              onTap: onRefresh ?? () {},
               isDark: isDark,
             ),
             CustomVerticalDivider(isDark: isDark),

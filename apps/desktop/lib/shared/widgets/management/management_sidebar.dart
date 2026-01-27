@@ -7,11 +7,15 @@ import 'package:hugeicons/hugeicons.dart';
 class ManagementSidebar extends StatelessWidget {
   final String activeRoute;
   final Function(String) onRouteSelected;
+  final bool isCollapsed;
+  final VoidCallback onToggle;
 
   const ManagementSidebar({
     super.key,
     required this.activeRoute,
     required this.onRouteSelected,
+    required this.isCollapsed,
+    required this.onToggle,
   });
 
   @override
@@ -19,7 +23,7 @@ class ManagementSidebar extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      width: 260,
+      width: double.infinity,
       decoration: BoxDecoration(
         color: isDark ? AppColors.slate800 : AppColors.slate50,
         border: Border(
@@ -31,17 +35,20 @@ class ManagementSidebar extends StatelessWidget {
       child: Column(
         children: [
           // Logo Section
-          Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: isDark ? AppColors.slate700 : AppColors.slate200,
+          AnimatedPadding(
+            duration: const Duration(milliseconds: 300),
+            padding: EdgeInsets.symmetric(horizontal: isCollapsed ? 12 : 24),
+            child: Container(
+              height: 56,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: isDark ? AppColors.slate700 : AppColors.slate200,
+                  ),
                 ),
               ),
+              child: AppLogo(isCollapsed: isCollapsed),
             ),
-            child: AppLogo(),
           ),
 
           // Navigation Links
@@ -55,6 +62,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'dashboard',
                   onTap: () => onRouteSelected('dashboard'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
                 PosNavigationButton(
                   label: 'Products',
@@ -62,6 +70,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'products',
                   onTap: () => onRouteSelected('products'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
                 PosNavigationButton(
                   label: 'Stock',
@@ -69,6 +78,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'stock',
                   onTap: () => onRouteSelected('stock'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
                 PosNavigationButton(
                   label: 'Reporting',
@@ -76,6 +86,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'reporting',
                   onTap: () => onRouteSelected('reporting'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
                 PosNavigationButton(
                   label: 'Members',
@@ -83,6 +94,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'members',
                   onTap: () => onRouteSelected('members'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
                 PosNavigationButton(
                   label: 'Customers & suppliers',
@@ -90,6 +102,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'customers',
                   onTap: () => onRouteSelected('customers'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
 
                 PosNavigationButton(
@@ -98,6 +111,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'users',
                   onTap: () => onRouteSelected('users'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
                 PosNavigationButton(
                   label: 'Tax rates',
@@ -105,6 +119,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'taxes',
                   onTap: () => onRouteSelected('taxes'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
                 PosNavigationButton(
                   label: 'My company',
@@ -112,6 +127,7 @@ class ManagementSidebar extends StatelessWidget {
                   isActive: activeRoute == 'company',
                   onTap: () => onRouteSelected('company'),
                   isDark: isDark,
+                  isCollapsed: isCollapsed,
                 ),
               ],
             ),
@@ -127,11 +143,11 @@ class ManagementSidebar extends StatelessWidget {
                 ),
               ),
             ),
-            alignment: Alignment.centerRight,
+            alignment: isCollapsed ? Alignment.center : Alignment.centerRight,
             child: IconButton(
-              onPressed: () {},
-              icon: HugeIcon(
-                icon: HugeIcons.strokeRoundedCircleArrowMoveDownLeft,
+              onPressed: onToggle,
+              icon: Icon(
+                isCollapsed ? Icons.arrow_forward : Icons.arrow_back,
                 color: AppColors.slate400,
                 size: 20,
               ),
