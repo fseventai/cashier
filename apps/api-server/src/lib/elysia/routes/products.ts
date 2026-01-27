@@ -56,24 +56,22 @@ export const productRoutes = new Elysia({ prefix: "/products" })
     },
   )
   .delete("/groups/:id", async ({ params: { id }, set }) => {
-    try {
-      const group = await groupService.deleteGroup(id);
-      if (!group) {
-        set.status = 404;
-        return "Group not found";
-      }
-      return { success: true };
-    } catch (error: any) {
-      if (error.code === "23503") {
-        set.status = 409;
-        return {
-          error: "Conflict",
-          message:
-            "Grup tidak bisa dihapus karena masih digunakan oleh produk atau kategori lain. Silakan nonaktifkan grup saja.",
-        };
-      }
-      throw error;
+    const result = await groupService.deleteGroup(id);
+    if (!result.group) {
+      set.status = 404;
+      return "Group not found";
     }
+
+    if (result.action === "deactivated") {
+      return {
+        success: true,
+        action: "deactivated",
+        message:
+          "Grup tidak bisa dihapus karena masih digunakan. Grup telah dinonaktifkan secara otomatis.",
+      };
+    }
+
+    return { success: true, action: "deleted" };
   })
 
   // --- Taxes ---
@@ -124,24 +122,22 @@ export const productRoutes = new Elysia({ prefix: "/products" })
     },
   )
   .delete("/taxes/:id", async ({ params: { id }, set }) => {
-    try {
-      const tax = await taxService.deleteTax(id);
-      if (!tax) {
-        set.status = 404;
-        return "Tax not found";
-      }
-      return { success: true };
-    } catch (error: any) {
-      if (error.code === "23503") {
-        set.status = 409;
-        return {
-          error: "Conflict",
-          message:
-            "Pajak tidak bisa dihapus karena masih digunakan oleh produk. Silakan nonaktifkan pajak saja.",
-        };
-      }
-      throw error;
+    const result = await taxService.deleteTax(id);
+    if (!result.tax) {
+      set.status = 404;
+      return "Tax not found";
     }
+
+    if (result.action === "deactivated") {
+      return {
+        success: true,
+        action: "deactivated",
+        message:
+          "Pajak tidak bisa dihapus karena masih digunakan. Pajak telah dinonaktifkan secara otomatis.",
+      };
+    }
+
+    return { success: true, action: "deleted" };
   })
 
   // --- Storage Locations ---
@@ -192,7 +188,7 @@ export const productRoutes = new Elysia({ prefix: "/products" })
       }
       return { success: true };
     } catch (error: any) {
-      if (error.code === "23503") {
+      if (error.code === "23503" || error.cause?.code === "23503") {
         set.status = 409;
         return {
           error: "Conflict",
@@ -302,22 +298,20 @@ export const productRoutes = new Elysia({ prefix: "/products" })
     },
   )
   .delete("/:id", async ({ params: { id }, set }) => {
-    try {
-      const product = await productService.deleteProduct(id);
-      if (!product) {
-        set.status = 404;
-        return "Product not found";
-      }
-      return { success: true };
-    } catch (error: any) {
-      if (error.code === "23503") {
-        set.status = 409;
-        return {
-          error: "Conflict",
-          message:
-            "Produk tidak bisa dihapus karena sudah memiliki data transaksi. Silakan nonaktifkan produk saja.",
-        };
-      }
-      throw error;
+    const result = await productService.deleteProduct(id);
+    if (!result.product) {
+      set.status = 404;
+      return "Product not found";
     }
+
+    if (result.action === "deactivated") {
+      return {
+        success: true,
+        action: "deactivated",
+        message:
+          "Produk tidak bisa dihapus karena sudah memiliki data transaksi. Produk telah dinonaktifkan secara otomatis.",
+      };
+    }
+
+    return { success: true, action: "deleted" };
   });

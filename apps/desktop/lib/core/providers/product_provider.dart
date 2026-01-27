@@ -49,12 +49,15 @@ class ProductList extends AsyncNotifier<List<Product>> {
     });
   }
 
-  Future<void> deleteProduct(String id) async {
+  Future<dynamic> deleteProduct(String id) async {
     state = const AsyncValue.loading();
     try {
-      await ref.read(productRepositoryProvider).deleteProduct(id);
+      final result = await ref
+          .read(productRepositoryProvider)
+          .deleteProduct(id);
       final products = await ref.read(productRepositoryProvider).getProducts();
       state = AsyncValue.data(products);
+      return result;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       rethrow;

@@ -31,10 +31,22 @@ export class TaxService {
   }
 
   async deleteTax(id: string) {
-    const [tax] = await this.db
-      .delete(taxes)
-      .where(eq(taxes.id, id))
-      .returning();
-    return tax;
+    try {
+      const [tax] = await this.db
+        .delete(taxes)
+        .where(eq(taxes.id, id))
+        .returning();
+      return { tax, action: "deleted" as const };
+    } catch (error: any) {
+      if (error.code === "23503" || error.cause?.code === "23503") {
+        const [tax] = await this.db
+          .update(taxes)
+          .set({ isEnabled: false, updatedAt: new Date() })
+          .where(eq(taxes.id, id))
+          .returning();
+        return { tax, action: "deactivated" as const };
+      }
+      throw error;
+    }
   }
 }

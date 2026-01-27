@@ -44,10 +44,22 @@ export class ProductGroupService {
   }
 
   async deleteGroup(id: string) {
-    const [group] = await this.db
-      .delete(productGroups)
-      .where(eq(productGroups.id, id))
-      .returning();
-    return group;
+    try {
+      const [group] = await this.db
+        .delete(productGroups)
+        .where(eq(productGroups.id, id))
+        .returning();
+      return { group, action: "deleted" as const };
+    } catch (error: any) {
+      if (error.code === "23503" || error.cause?.code === "23503") {
+        const [group] = await this.db
+          .update(productGroups)
+          .set({ isActive: false, updatedAt: new Date() })
+          .where(eq(productGroups.id, id))
+          .returning();
+        return { group, action: "deactivated" as const };
+      }
+      throw error;
+    }
   }
 }

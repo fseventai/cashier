@@ -105,16 +105,28 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
 
     if (confirmed == true) {
       try {
-        await ref.read(productListProvider.notifier).deleteProduct(selectedId);
+        final result = await ref
+            .read(productListProvider.notifier)
+            .deleteProduct(selectedId);
         ref.read(selectedProductIdProvider.notifier).state = null;
+
         if (mounted) {
+          final bool isDeactivated =
+              result is Map && result['action'] == 'deactivated';
+          final String title = isDeactivated ? 'Dinonaktifkan' : 'Berhasil';
+          final String description = isDeactivated
+              ? (result['message'] ?? 'Produk dinonaktifkan secara otomatis')
+              : 'Produk "${product.name}" berhasil dihapus';
+
           toastification.show(
             context: context,
-            type: ToastificationType.success,
+            type: isDeactivated
+                ? ToastificationType.warning
+                : ToastificationType.success,
             style: ToastificationStyle.flatColored,
-            title: const Text('Berhasil'),
-            description: Text('Produk "${product.name}" berhasil dihapus'),
-            autoCloseDuration: const Duration(seconds: 3),
+            title: Text(title),
+            description: Text(description),
+            autoCloseDuration: const Duration(seconds: 4),
           );
         }
       } catch (e) {
@@ -180,18 +192,28 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
 
     if (confirmed == true) {
       try {
-        await ref
+        final result = await ref
             .read(productGroupListProvider.notifier)
             .deleteGroup(selectedId);
         ref.read(selectedProductGroupIdProvider.notifier).state = null;
+
         if (mounted) {
+          final bool isDeactivated =
+              result is Map && result['action'] == 'deactivated';
+          final String title = isDeactivated ? 'Dinonaktifkan' : 'Berhasil';
+          final String description = isDeactivated
+              ? (result['message'] ?? 'Grup dinonaktifkan secara otomatis')
+              : 'Grup "${selectedGroup.name}" berhasil dihapus';
+
           toastification.show(
             context: context,
-            type: ToastificationType.success,
+            type: isDeactivated
+                ? ToastificationType.warning
+                : ToastificationType.success,
             style: ToastificationStyle.flatColored,
-            title: const Text('Berhasil'),
-            description: Text('Grup "${selectedGroup.name}" berhasil dihapus'),
-            autoCloseDuration: const Duration(seconds: 3),
+            title: Text(title),
+            description: Text(description),
+            autoCloseDuration: const Duration(seconds: 4),
           );
         }
       } catch (e) {

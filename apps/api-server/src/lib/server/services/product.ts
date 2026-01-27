@@ -45,10 +45,22 @@ export class ProductService {
   }
 
   async deleteProduct(id: string) {
-    const [product] = await this.db
-      .delete(products)
-      .where(eq(products.id, id))
-      .returning();
-    return product;
+    try {
+      const [product] = await this.db
+        .delete(products)
+        .where(eq(products.id, id))
+        .returning();
+      return { product, action: "deleted" as const };
+    } catch (error: any) {
+      if (error.code === "23503" || error.cause?.code === "23503") {
+        const [product] = await this.db
+          .update(products)
+          .set({ isActive: false, updatedAt: new Date() })
+          .where(eq(products.id, id))
+          .returning();
+        return { product, action: "deactivated" as const };
+      }
+      throw error;
+    }
   }
 }

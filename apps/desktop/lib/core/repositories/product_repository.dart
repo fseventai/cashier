@@ -6,15 +6,22 @@ abstract class IProductRepository {
   Future<Product> getProductById(String id);
   Future<String> createProduct(Product product);
   Future<void> updateProduct(String id, Product product);
-  Future<void> deleteProduct(String id);
+  Future<dynamic> deleteProduct(String id);
 
   Future<List<ProductGroup>> getGroups();
   Future<ProductGroup> createGroup(ProductGroup group);
   Future<void> updateGroup(String id, ProductGroup group);
-  Future<void> deleteGroup(String id);
+  Future<dynamic> deleteGroup(String id);
 
   Future<List<Tax>> getTaxes();
+  Future<Tax> createTax(Tax tax);
+  Future<void> updateTax(String id, Tax tax);
+  Future<dynamic> deleteTax(String id);
+
   Future<List<StorageLocation>> getLocations();
+  Future<StorageLocation> createLocation(StorageLocation location);
+  Future<void> updateLocation(String id, StorageLocation location);
+  Future<void> deleteLocation(String id);
 }
 
 class ProductRepository implements IProductRepository {
@@ -49,8 +56,9 @@ class ProductRepository implements IProductRepository {
   }
 
   @override
-  Future<void> deleteProduct(String id) async {
-    await _apiService.dio.delete('/products/$id');
+  Future<dynamic> deleteProduct(String id) async {
+    final response = await _apiService.dio.delete('/products/$id');
+    return response.data;
   }
 
   @override
@@ -76,8 +84,9 @@ class ProductRepository implements IProductRepository {
   }
 
   @override
-  Future<void> deleteGroup(String id) async {
-    await _apiService.dio.delete('/products/groups/$id');
+  Future<dynamic> deleteGroup(String id) async {
+    final response = await _apiService.dio.delete('/products/groups/$id');
+    return response.data;
   }
 
   @override
@@ -87,10 +96,52 @@ class ProductRepository implements IProductRepository {
   }
 
   @override
+  Future<Tax> createTax(Tax tax) async {
+    final response = await _apiService.dio.post(
+      '/products/taxes',
+      data: tax.toJson(),
+    );
+    return Tax.fromJson(response.data);
+  }
+
+  @override
+  Future<void> updateTax(String id, Tax tax) async {
+    await _apiService.dio.patch('/products/taxes/$id', data: tax.toJson());
+  }
+
+  @override
+  Future<dynamic> deleteTax(String id) async {
+    final response = await _apiService.dio.delete('/products/taxes/$id');
+    return response.data;
+  }
+
+  @override
   Future<List<StorageLocation>> getLocations() async {
     final response = await _apiService.dio.get('/products/locations');
     return (response.data as List)
         .map((e) => StorageLocation.fromJson(e))
         .toList();
+  }
+
+  @override
+  Future<StorageLocation> createLocation(StorageLocation location) async {
+    final response = await _apiService.dio.post(
+      '/products/locations',
+      data: location.toJson(),
+    );
+    return StorageLocation.fromJson(response.data);
+  }
+
+  @override
+  Future<void> updateLocation(String id, StorageLocation location) async {
+    await _apiService.dio.patch(
+      '/products/locations/$id',
+      data: location.toJson(),
+    );
+  }
+
+  @override
+  Future<void> deleteLocation(String id) async {
+    await _apiService.dio.delete('/products/locations/$id');
   }
 }
